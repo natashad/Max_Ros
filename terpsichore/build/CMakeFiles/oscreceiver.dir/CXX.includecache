@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wavy/workspace/ros/terpsichore/src/main.cpp
+iostream
+-
+cstring
+-
+osc/OscReceivedElements.h
+/home/wavy/workspace/ros/terpsichore/src/osc/OscReceivedElements.h
+osc/OscPacketListener.h
+/home/wavy/workspace/ros/terpsichore/src/osc/OscPacketListener.h
+ip/UdpSocket.h
+/home/wavy/workspace/ros/terpsichore/src/ip/UdpSocket.h
+

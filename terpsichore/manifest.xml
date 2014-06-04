@@ -1,0 +1,15 @@
+<package>
+	<description brief="terpsichore">
+
+	terpsichore
+
+	</description>
+	<author>Xingbo Wang</author>
+	<license>GPL</license>
+	<review status="unreviewed" notes=""/>
+	<url>http://ros.org/wiki/terpsichore</url>
+	<depend package="roscpp"/>
+	<depend package="std_msgs"/>
+	<depend package="message_generation"/>
+	<depend package="message_runtime"/>
+</package>
