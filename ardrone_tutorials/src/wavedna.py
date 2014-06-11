@@ -15,7 +15,7 @@
 # Jun 09, 2014 - initialy created (Tristan Laidlow)
 
 # NOTES
-# This is based on the work initially done by Frederico Augliaro.
+# This is based on the work initially done by Federico Augugliaro.
 
 
 ####################
