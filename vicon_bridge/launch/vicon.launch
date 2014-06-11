@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<launch>
+
+
+	<node pkg="vicon_bridge" type="vicon_bridge" name="vicon" output="screen">
+		<param name="stream_mode" value="ClientPull" type="str" />
+		<!--param name="datastream_hostport" value="192.168.0.13:801" type="str" /-->
+		<param name="datastream_hostport" value="192.168.2.102:801" type="str" />
+    <!--<param name="tf_ref_frame_id" value="Frisbee" type="str" /> -->
+<!-- 192.168.2.105:801 -->
+    <!-- note: must have all components of zero_pose (orientation and position) for this to work -->
+<!--
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/orientation/x" value="-0.5977353123" type="double" /> 
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/orientation/y" value="0.29192884194" type="double" /> 
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/orientation/z" value="0.67694496717" type="double" />
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/orientation/w" value="0.31501675995" type="double" />
+
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/position/x"    value="0.116261226836" type="double" />
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/position/y"    value="-0.0281664390969" type="double" />
+    <param name="ARDroneDorian/ARDroneDorian/zero_pose/position/z"    value="0.01" type="double" />
+
+-->
+
+    <param name="ARDroneShare/ARDroneShare/zero_pose/orientation/x" value="0.675575072339" type="double" /> 
+    <param name="ARDroneShare/ARDroneShare/zero_pose/orientation/y" value="-0.04463231523" type="double" /> 
+    <param name="ARDroneShare/ARDroneShare/zero_pose/orientation/z" value="0.734692986763" type="double" />
+    <param name="ARDroneShare/ARDroneShare/zero_pose/orientation/w" value="-0.0428076310194" type="double" />
+
+    <param name="ARDroneShare/ARDroneShare/zero_pose/position/x"    value="0.116261226836" type="double" />
+    <param name="ARDroneShare/ARDroneShare/zero_pose/position/y"    value="-0.0281664390969" type="double" />
+    <param name="ARDroneShare/ARDroneShare/zero_pose/position/z"    value="0.01" type="double" />
+
+		</node>
+</launch>
+
