@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 2.8)
+project(ardrone_tutorials)
+
+find_package(catkin REQUIRED COMPONENTS
+	roscpp
+	rospy
+	std_msgs
+	message_generation
+)
+add_message_files(
+	FILES 
+	StateData.msg
+)
+
+#catkin_python_setup()
+
+generate_messages(
+	DEPENDENCIES
+	std_msgs
+)
+catkin_package(
+	CATKIN_DEPENDS message_runtime
+)
+
+
+
+install(PROGRAMS src/drone_controller.py  
+		 src/drone_status.py  
+		 src/drone_video_display.py  
+		 src/joystick_controller.py  
+		 src/keyboard_controller.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
