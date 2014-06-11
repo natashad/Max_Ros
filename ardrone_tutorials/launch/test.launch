@@ -1,0 +1,4 @@
+<launch>
+  <node name="terpsichore" pkg="terpsichore" type="osc_test" output="screen" required="True" />
+  <node name="wavedna" pkg="ardrone_tutorials" type="wavedna.py" output="screen" required="True" />
+</launch>

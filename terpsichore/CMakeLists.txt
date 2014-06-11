@@ -45,6 +45,6 @@ set(OSC_LIBRARIES oscpack)
 # build!
 rosbuild_add_executable(osc_test ${OSC_RECEIVER_SOURCE_FILES} ${OSC_RECEIVER_HEADER_FILES})
 set(SFML_LIBRARIES sfml-graphics sfml-window sfml-system sfml-audio)
-target_link_libraries(osc_test ${OSC_LIBRARIES} ${SFML_LIBRARIES})
+target_link_libraries(osc_test ${OSC_LIBRARIES} ${SFML_LIBRARIES} m)
 add_definitions(-std=c++0x)
 #add_dependencies(drone_stateestimation thirdparty ${PROJECT_NAME}_gencpp ${PROJECT_NAME}_gencfg)

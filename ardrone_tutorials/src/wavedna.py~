@@ -45,7 +45,6 @@ from ardrone_tutorials.msg import StateData
 
 # Bool is used for waypoint requests
 from std_msgs.msg import Bool
-from std_msgs.msg import Float64
 
 
 ##################
@@ -94,7 +93,7 @@ class CreateTrajectory(object):
 
         # Subscribe to the WaveDNA data
         self.sub_wavedna = rospy.Subscriber('/terpsichore/music_data', bardata, self.buffer_data)
-        self.sub_time = rospy.Subscriber('/terpsichore/ableton_time', Float64, self.update_time)
+        self.sub_time = rospy.Subscriber('/terpsichore/ableton_time', float64, self.update_time)
 
         # Publish to the desired_coordinates topic
         self.pub_desired = rospy.Publisher('/desired_coordinates', StateData)
@@ -110,16 +109,12 @@ class CreateTrajectory(object):
         self.clean_buffers()
 
         # Add new data to the buffers
-        for i in range(0,len(new_wavedna.beats)-1):
-            self.time_buffer.append(new_wavedna.beats[i].t)
-            self.point_buffer.append(new_wavedna.beats[i].data[0])
+        self.time_buffer.append(new_wavedna.beats(0).t)
+        self.point_buffer.append(new_wavedna.beats(0).data(0))
     
     # Keep time in sync with WaveDNA
     def update_time(self, new_time):
-        self.cur_time = new_time.data
-                
-        # REMOVE: DEBUGGING ONLY
-        self.process_request()
+        self.cur_time = new_time
 
     # Remove any unnecessary points from buffers
     def clean_buffers(self):
@@ -130,7 +125,7 @@ class CreateTrajectory(object):
         # If the current time is past the 2nd item in the buffer, get rid
         # of the first. Repeat until time is between first and second items.
         #while (len(self.time_buffer) > 1) and (est_time > self.time_buffer(1)):
-        while (len(self.time_buffer) > 1) and (self.cur_time > self.time_buffer[1]):
+        while (len(self.time_buffer) > 1) and (self.cur_time > self.time_buffer(1)):
             self.time_buffer.pop(0)
             self.point_buffer.pop(0)
 
@@ -159,7 +154,7 @@ class CreateTrajectory(object):
         elif len(self.time_buffer) == 1:
             self.x = 0.0
             self.y = 0.0
-            self.z = 1.0 + self.point_buffer[0]*scale
+            self.z = 1.0 + self.point_buffer(0)*scale
             self.vx = 0.0
             self.vy = 0.0
             self.vz = 0.0
@@ -172,13 +167,13 @@ class CreateTrajectory(object):
 
         # Else create the trajectory to move to the next point
         else:
-            total_time = self.time_buffer[1] - self.time_buffer[0]
+            total_time = self.time_buffer(1) - self.time_buffer(0)
             step_time = 0.75 * total_time * (1.0 - 2.0*math.fabs(0.5 - k))
-            p_initial = 1.0 + self.point_buffer[0]*scale
-            p_final = 1.0 + self.point_buffer[1]*scale
+            p_initial = 1.0 + self.point_buffer(0)*scale
+            p_final = 1.0 + self.point_buffer(1)*scale
             v_initial = 0.0
             v_final = 0.0
-            self.determine_state(total_time, step_time, p_initial, p_final, v_initial, v_final, self.cur_time - self.time_buffer[0])
+            self.determine_state(total_time, step_time, p_initial, p_final, v_initial, v_final, self.cur_time)
 
         # Publish state
         state = StateData()

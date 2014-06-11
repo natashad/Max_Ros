@@ -8,8 +8,9 @@
   <url>http://github.com/mikehamer/ardrone_tutorials</url>
 
   <depend package="ardrone_autonomy" />
+  <depend package="std_msgs" />
+  <depend package="message_runtime" />
+  <depend package="terpsichore" />
   <depend package="joy" />
   
 </package>
-
-

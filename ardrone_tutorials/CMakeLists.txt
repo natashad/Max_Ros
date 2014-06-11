@@ -1,37 +1,25 @@
-cmake_minimum_required(VERSION 2.8)
-project(ardrone_tutorials)
+cmake_minimum_required(VERSION 2.4.6)
+include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
-find_package(catkin REQUIRED COMPONENTS
-	roscpp
-	rospy
-	std_msgs
-	message_generation
-)
-add_message_files(
-	FILES 
-	StateData.msg
-)
+# Set the build type.  Options are:
+#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
+#  Debug          : w/ debug symbols, w/o optimization
+#  Release        : w/o debug symbols, w/ optimization
+#  RelWithDebInfo : w/ debug symbols, w/ optimization
+#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
+set(ROS_BUILD_TYPE RelWithDebInfo)
 
-#catkin_python_setup()
+rosbuild_init()
 
-generate_messages(
-	DEPENDENCIES
-	std_msgs
-)
-catkin_package(
-	CATKIN_DEPENDS message_runtime
-)
+#set the default path for built executables to the "bin" directory
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+#set the default path for built libraries to the "lib" directory
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
+#uncomment if you have defined messages
+rosbuild_genmsg()
+## Generate messages in the 'msg' folder
+#add_message_files(FILES pair.msg bardata.msg)
+#uncomment if you have defined services
+#rosbuild_gensrv()
 
-
-install(PROGRAMS src/drone_controller.py  
-		 src/drone_status.py  
-		 src/drone_video_display.py  
-		 src/joystick_controller.py  
-		 src/keyboard_controller.py
-        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)

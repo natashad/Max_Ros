@@ -23,21 +23,21 @@ struct pair_ {
 
   pair_()
   : t(0.0)
-  , data(0.0)
+  , data()
   {
   }
 
   pair_(const ContainerAllocator& _alloc)
   : t(0.0)
-  , data(0.0)
+  , data(_alloc)
   {
   }
 
   typedef double _t_type;
   double t;
 
-  typedef double _data_type;
-  double data;
+  typedef std::vector<double, typename ContainerAllocator::template rebind<double>::other >  _data_type;
+  std::vector<double, typename ContainerAllocator::template rebind<double>::other >  data;
 
 
   typedef boost::shared_ptr< ::terpsichore::pair_<ContainerAllocator> > Ptr;
@@ -68,12 +68,12 @@ template<class ContainerAllocator>
 struct MD5Sum< ::terpsichore::pair_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "549feb6e7056f306c3e466d1df87fc1c";
+    return "4704d1e9bdec53dad180dbd02389b120";
   }
 
   static const char* value(const  ::terpsichore::pair_<ContainerAllocator> &) { return value(); } 
-  static const uint64_t static_value1 = 0x549feb6e7056f306ULL;
-  static const uint64_t static_value2 = 0xc3e466d1df87fc1cULL;
+  static const uint64_t static_value1 = 0x4704d1e9bdec53daULL;
+  static const uint64_t static_value2 = 0xd180dbd02389b120ULL;
 };
 
 template<class ContainerAllocator>
@@ -91,14 +91,13 @@ struct Definition< ::terpsichore::pair_<ContainerAllocator> > {
   static const char* value() 
   {
     return "float64 t\n\
-float64 data\n\
+float64[] data\n\
 ";
   }
 
   static const char* value(const  ::terpsichore::pair_<ContainerAllocator> &) { return value(); } 
 };
 
-template<class ContainerAllocator> struct IsFixedSize< ::terpsichore::pair_<ContainerAllocator> > : public TrueType {};
 } // namespace message_traits
 } // namespace ros
 
@@ -132,8 +131,12 @@ struct Printer< ::terpsichore::pair_<ContainerAllocator> >
   {
     s << indent << "t: ";
     Printer<double>::stream(s, indent + "  ", v.t);
-    s << indent << "data: ";
-    Printer<double>::stream(s, indent + "  ", v.data);
+    s << indent << "data[]" << std::endl;
+    for (size_t i = 0; i < v.data.size(); ++i)
+    {
+      s << indent << "  data[" << i << "]: ";
+      Printer<double>::stream(s, indent + "  ", v.data[i]);
+    }
   }
 };
 

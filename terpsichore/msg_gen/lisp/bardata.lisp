@@ -85,16 +85,16 @@
   "terpsichore/bardata")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<bardata>)))
   "Returns md5sum for a message object of type '<bardata>"
-  "9a317e4c8ded3becddcd48b6b516684b")
+  "9c113914757a1b063ff8abb1eea20f57")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'bardata)))
   "Returns md5sum for a message object of type 'bardata"
-  "9a317e4c8ded3becddcd48b6b516684b")
+  "9c113914757a1b063ff8abb1eea20f57")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<bardata>)))
   "Returns full string definition for message of type '<bardata>"
-  (cl:format cl:nil "pair[] beats~%pair[] events~%================================================================================~%MSG: terpsichore/pair~%float64 t~%float64 data~%~%"))
+  (cl:format cl:nil "pair[] beats~%pair[] events~%================================================================================~%MSG: terpsichore/pair~%float64 t~%float64[] data~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'bardata)))
   "Returns full string definition for message of type 'bardata"
-  (cl:format cl:nil "pair[] beats~%pair[] events~%================================================================================~%MSG: terpsichore/pair~%float64 t~%float64 data~%~%"))
+  (cl:format cl:nil "pair[] beats~%pair[] events~%================================================================================~%MSG: terpsichore/pair~%float64 t~%float64[] data~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <bardata>))
   (cl:+ 0
      4 (cl:reduce #'cl:+ (cl:slot-value msg 'beats) :key #'(cl:lambda (ele) (cl:declare (cl:ignorable ele)) (cl:+ (roslisp-msg-protocol:serialization-length ele))))

@@ -6,6 +6,54 @@
 
 #IncludeRegexTransform: 
 
+../msg_gen/cpp/include/terpsichore/bardata.h
+string
+-
+vector
+-
+map
+-
+ostream
+-
+ros/serialization.h
+../msg_gen/cpp/include/terpsichore/ros/serialization.h
+ros/builtin_message_traits.h
+../msg_gen/cpp/include/terpsichore/ros/builtin_message_traits.h
+ros/message_operations.h
+../msg_gen/cpp/include/terpsichore/ros/message_operations.h
+ros/time.h
+../msg_gen/cpp/include/terpsichore/ros/time.h
+ros/macros.h
+../msg_gen/cpp/include/terpsichore/ros/macros.h
+ros/assert.h
+../msg_gen/cpp/include/terpsichore/ros/assert.h
+terpsichore/pair.h
+../msg_gen/cpp/include/terpsichore/terpsichore/pair.h
+terpsichore/pair.h
+../msg_gen/cpp/include/terpsichore/terpsichore/pair.h
+
+../msg_gen/cpp/include/terpsichore/pair.h
+string
+-
+vector
+-
+map
+-
+ostream
+-
+ros/serialization.h
+../msg_gen/cpp/include/terpsichore/ros/serialization.h
+ros/builtin_message_traits.h
+../msg_gen/cpp/include/terpsichore/ros/builtin_message_traits.h
+ros/message_operations.h
+../msg_gen/cpp/include/terpsichore/ros/message_operations.h
+ros/time.h
+../msg_gen/cpp/include/terpsichore/ros/time.h
+ros/macros.h
+../msg_gen/cpp/include/terpsichore/ros/macros.h
+ros/assert.h
+../msg_gen/cpp/include/terpsichore/ros/assert.h
+
 /home/wavy/workspace/ros/terpsichore/src/LRReceiver.h
 oscpack/osc/OscReceivedElements.h
 -
@@ -17,6 +65,8 @@ string
 -
 vector
 -
+map
+-
 
 /home/wavy/workspace/ros/terpsichore/src/main.cpp
 LRReceiver.h
@@ -25,7 +75,9 @@ oscpack/ip/UdpSocket.h
 -
 oscpack/osc/OscOutboundPacketStream.h
 -
-std_msgs/String.h
+std_msgs/Float64.h
+-
+terpsichore/bardata.h
 -
 ros/ros.h
 -
@@ -684,7 +736,7 @@ ros/forwards.h
 
 /opt/ros/hydro/include/rosconsole/macros_generated.h
 
-/opt/ros/hydro/include/std_msgs/String.h
+/opt/ros/hydro/include/std_msgs/Float64.h
 string
 -
 vector

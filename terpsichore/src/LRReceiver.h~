@@ -26,7 +26,7 @@ struct Position {
 	float unit;
 	
 	Position():bar(1), beat(1), unit(0){};
-	Position(int a):bar(a), beat(0), unit(0){};
+	Position(int a):bar(a), beat(a), unit(a){};
 	float toFloat(TimeSignature, double);
 	string toString();
 	bool operator<(const Position&) const;
@@ -71,10 +71,7 @@ struct Clip {
 	bool isPlaying;
 	bool isTriggered;
 	
-	Clip():id(0), name(""), start(), length(8), isLooping(false), isPlaying(true), isTriggered(false){};
-	Clip(const Clip& o):id(o.id), name(o.name), start(o.start), length(o.length), 
-				isLooping(o.isLooping), isPlaying(o.isPlaying), 
-				isTriggered(o.isTriggered) { notes = o.notes;};
+	Clip():id(0), name(""), start(), length(0), isLooping(false), isPlaying(true), isTriggered(false){};
 };
 
 struct Track {

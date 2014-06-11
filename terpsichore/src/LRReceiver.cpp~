@@ -231,11 +231,9 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
 					notes = &(c->notes);
 				}else{
 					//found it
-					Clip old_c = it->second;
-					c = new Clip(old_c);
+					c = &(it->second);
 					notes = &(c->notes);
 					clips.erase(clip_id);
-					delete &old_c;
 				}
 				
 				for(int i = 0; i < numnotes; i++){
@@ -256,11 +254,6 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
 				}
 				clips.insert(std::pair<int, Clip>(clip_id, *c));
 				cout << "number of notes in this clip: " << notes->size() << endl;
-				for(vector<ClipUpdateCallbackType>::iterator it = clipUpdateCallbacks.begin(); it != clipUpdateCallbacks.end(); ++it){
-					cout << "calling callback....";
-                    (*it)(*c);
-                    cout << "done" << endl;
-                }
     		}else if(type.find("/playback") == 0){
     			
     		}

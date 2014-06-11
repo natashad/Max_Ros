@@ -5,6 +5,8 @@ CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o
  /home/wavy/workspace/ros/terpsichore/src/LRReceiver.cpp
  /home/wavy/workspace/ros/terpsichore/src/LRReceiver.h
 CMakeFiles/osc_test.dir/src/main.cpp.o
+ ../msg_gen/cpp/include/terpsichore/bardata.h
+ ../msg_gen/cpp/include/terpsichore/pair.h
  /home/wavy/workspace/ros/terpsichore/src/LRReceiver.h
  /home/wavy/workspace/ros/terpsichore/src/main.cpp
  /opt/ros/hydro/include/XmlRpcDecl.h
@@ -63,4 +65,4 @@ CMakeFiles/osc_test.dir/src/main.cpp.o
  /opt/ros/hydro/include/ros/wall_timer.h
  /opt/ros/hydro/include/ros/wall_timer_options.h
  /opt/ros/hydro/include/rosconsole/macros_generated.h
- /opt/ros/hydro/include/std_msgs/String.h
+ /opt/ros/hydro/include/std_msgs/Float64.h

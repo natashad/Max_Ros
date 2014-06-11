@@ -70,12 +70,12 @@ template<class ContainerAllocator>
 struct MD5Sum< ::terpsichore::bardata_<ContainerAllocator> > {
   static const char* value() 
   {
-    return "9a317e4c8ded3becddcd48b6b516684b";
+    return "9c113914757a1b063ff8abb1eea20f57";
   }
 
   static const char* value(const  ::terpsichore::bardata_<ContainerAllocator> &) { return value(); } 
-  static const uint64_t static_value1 = 0x9a317e4c8ded3becULL;
-  static const uint64_t static_value2 = 0xddcd48b6b516684bULL;
+  static const uint64_t static_value1 = 0x9c113914757a1b06ULL;
+  static const uint64_t static_value2 = 0x3ff8abb1eea20f57ULL;
 };
 
 template<class ContainerAllocator>
@@ -97,7 +97,7 @@ pair[] events\n\
 ================================================================================\n\
 MSG: terpsichore/pair\n\
 float64 t\n\
-float64 data\n\
+float64[] data\n\
 ";
   }
 

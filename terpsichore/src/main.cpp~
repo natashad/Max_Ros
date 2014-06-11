@@ -1,8 +1,7 @@
 #include "LRReceiver.h"
 #include <oscpack/ip/UdpSocket.h>
 #include <oscpack/osc/OscOutboundPacketStream.h>
-#include <std_msgs/Float64.h>
-#include <terpsichore/bardata.h>
+#include <std_msgs/String.h>
 #include <ros/ros.h>
 #include <thread>
 #include <csignal>
@@ -19,7 +18,6 @@ char buffer[OUTPUT_BUFFER_SIZE];
 bool playing = false;
 bool quit = false;
 	
-//graphical stuff
 std::string transport_string;
 sf::Text transport_text;
 std::string time_string;
@@ -30,123 +28,35 @@ std::string offset_string;
 sf::Text offset_text;
 sf::Text debug_text;
 
+ros::Publisher pub;
 std::string ADDRESS;
 LRPacketListener* listener;
 UdpListeningReceiveSocket* receive_socket;
 
-ros::Publisher data_pub;
 ros::Time last_update_time;
 ros::Time playback_start_time;
-Transport last_transport;
+Transport last_transport_pos;
 double sync_offset;
 double t;
 
-terpsichore::bardata bardata;
+void publish(std::string s){
+    std_msgs::String msg;
+    msg.data = s.c_str();
+    pub.publish(msg);
+}
 
 void sync(Transport tr){
     //std::cout << tr.toString() << std::endl;
     transport_string = tr.toString();
     if(playing){
-    	Transport diff = tr - last_transport;
+    	Transport diff = tr - last_transport_pos;
     	t = diff.toSec();
     	ros::Duration elapsed = ros::Time::now() - last_update_time;
     	sync_offset = t - elapsed.toSec();
     	offset_string = std::to_string(sync_offset);
-    	
-    	//upon reaching a new bar, obtain note info for the next bar
-    	if(tr.position.bar != last_transport.position.bar || tr.tempo != last_transport.tempo){
-    		double cur_t = (ros::Time::now() - playback_start_time).toSec();
-    		
-    		//information about the beats
-    		std::vector<terpsichore::pair> beats;
-			//binary bars
-			//if(tr.timeSignature.beatsPerBar % 2 == 0){
-				for(int i = 1; i <= tr.timeSignature.beatsPerBar; i++){
-					double beats_ahead = (1 * tr.timeSignature.beatsPerBar) + (i - 1);	
-    				double beat_time = ((double)(beats_ahead + (tr.position.unit/tr.resolution))/tr.tempo) * 60.0 + cur_t;
-					
-					terpsichore::pair b;
-					std::vector<double> d;
-					b.t = beat_time;
-					
-					if(i % 2 == 0){
-					//weak beat
-						d.push_back(0.5);
-					}else{
-					//stronk beat
-						d.push_back(1.0);
-					}
-					b.data = d;
-					beats.push_back(b);
-				}
-			//}
-    		bardata.beats = beats;
-    		
-    		std::vector<terpsichore::pair> events;
-    		//grab the first clip in the map
-    		std::map<int, Clip>::iterator it = listener->clips.begin();
-    		if(it != listener->clips.end()){
-				Clip c = it->second;
-				
-				for(std::multimap<Position, Note>::iterator it = c.notes.begin(); it != c.notes.end(); it++){
-					Position p = it->first;
-					if(p.bar > tr.position.bar){
-						std::cout << "breaking" << std::endl;
-						break;
-					}
-					else if(p.bar == tr.position.bar)
-					{
-						std::cout << "skipping" << std::endl;
-						continue;
-					}else if(p.bar >= (tr.position.bar + 1) % c.length.bar){
-						std::cout << "also skipping" << std::endl;
-						continue;
-					}
-			
-					Note n = it->second;
-					terpsichore::pair d;
-					d.t = (1.0 * tr.timeSignature.beatsPerBar + p.toFloat(tr.timeSignature, tr.resolution))/tr.tempo * 60.0 + cur_t;
-					double scaled_pitch = (double)(n.pitch)/(double)(108);
-					double scaled_vel = double(n.velocity)/(double)(127);
-		
-					std::vector<double> info;
-					info.push_back(scaled_pitch);
-					info.push_back((double)n.duration);
-					info.push_back(scaled_vel);
-					d.data = info;
-					events.push_back(d);
-				}
-				bardata.events = events;
-			}
-    		
-    		data_pub.publish(bardata);
-    	}
     }
 	last_update_time = ros::Time::now();
-    last_transport = tr;
-}
-
-void loadClip(Clip c){
-	std::vector<terpsichore::pair> note_data;
-	for(std::multimap<Position, Note>::iterator it = c.notes.begin(); it != c.notes.end(); it++){
-		Position p = it->first;
-		if(p.bar > 2)
-			break;
-			
-		Note n = it->second;
-		terpsichore::pair d;
-		d.t = p.toFloat(last_transport.timeSignature, last_transport.resolution)/last_transport.tempo * 60.0;
-		double scaled_pitch = (double)(n.pitch - 21)/(double)(108-21);
-		double scaled_vel = double(n.velocity)/(double)(127);
-		
-		std::vector<double> info;
-		info.push_back(scaled_pitch);
-		info.push_back((double)n.duration);
-		info.push_back(scaled_vel);
-		d.data = info;
-		note_data.push_back(d);
-	}
-	bardata.events = note_data;
+    last_transport_pos = tr;
 }
 
 void playbackChanged(Playback p){
@@ -206,10 +116,8 @@ void ros_stuff(){
 	ros::init(argc, argv, "osc_relay");
     ros::NodeHandle n;
     ros::Rate loop_rate(200);
-    std::string timing_channel = n.resolveName("/terpsichore/ableton_time");
-    std::string music_data_channel = n.resolveName("/terpsichore/music_data");
-    ros::Publisher time_pub = n.advertise<std_msgs::Float64>(timing_channel,50);
-    data_pub = n.advertise<terpsichore::bardata>(music_data_channel,50);
+    std::string command_channel = n.resolveName("osc_test");
+    pub = n.advertise<std_msgs::String>(command_channel,50);
     std::cout << "ros thread is working\n";	
     
     while(!quit){
@@ -219,11 +127,7 @@ void ros_stuff(){
         	last_update_time = ros::Time::now();
         	t = (last_update_time - playback_start_time).toSec();// + sync_offset;
         	
-        	std_msgs::Float64 time_data;
-        	time_data.data = t;
-	        time_pub.publish(time_data);
 	        //send("/time", (float)t, transmit_socket);
-	        
 	        time_string = "t = " + std::to_string(t) + " sec";
 	        
         }
@@ -234,10 +138,10 @@ void ros_stuff(){
 int main(int argc, char* argv[])
 {
     if(argc < 2){
-        ADDRESS = "localhost";
-    }else{
-    	ADDRESS = argv[1];
+        std::cerr << "enter the address" << std::endl;
+        return 1;
     }
+    ADDRESS = argv[1];
     std::cout << ADDRESS << std::endl;
     
     //start ros thread
@@ -247,10 +151,9 @@ int main(int argc, char* argv[])
     //Initialize OSC stuff
     UdpTransmitSocket transmit_socket( IpEndpointName( ADDRESS.c_str(), PORT ) );
     listener = new LRPacketListener();
-    //listener->registerStringCallback(nothing);
+    listener->registerStringCallback(publish);
     listener->registerTransportCallback(sync);
     listener->registerPlaybackCallback(playbackChanged);
-    listener->registerClipUpdateCallback(loadClip);
     receive_socket = new UdpListeningReceiveSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, PORT ), listener);
     
     

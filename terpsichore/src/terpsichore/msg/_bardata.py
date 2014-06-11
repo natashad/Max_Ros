@@ -7,7 +7,7 @@ import struct
 import terpsichore.msg
 
 class bardata(genpy.Message):
-  _md5sum = "9a317e4c8ded3becddcd48b6b516684b"
+  _md5sum = "9c113914757a1b063ff8abb1eea20f57"
   _type = "terpsichore/bardata"
   _has_header = False #flag to mark the presence of a Header object
   _full_text = """pair[] beats
@@ -15,7 +15,7 @@ pair[] events
 ================================================================================
 MSG: terpsichore/pair
 float64 t
-float64 data
+float64[] data
 """
   __slots__ = ['beats','events']
   _slot_types = ['terpsichore/pair[]','terpsichore/pair[]']
@@ -60,13 +60,19 @@ float64 data
       length = len(self.beats)
       buff.write(_struct_I.pack(length))
       for val1 in self.beats:
-        _x = val1
-        buff.write(_struct_2d.pack(_x.t, _x.data))
+        buff.write(_struct_d.pack(val1.t))
+        length = len(val1.data)
+        buff.write(_struct_I.pack(length))
+        pattern = '<%sd'%length
+        buff.write(struct.pack(pattern, *val1.data))
       length = len(self.events)
       buff.write(_struct_I.pack(length))
       for val1 in self.events:
-        _x = val1
-        buff.write(_struct_2d.pack(_x.t, _x.data))
+        buff.write(_struct_d.pack(val1.t))
+        length = len(val1.data)
+        buff.write(_struct_I.pack(length))
+        pattern = '<%sd'%length
+        buff.write(struct.pack(pattern, *val1.data))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -87,10 +93,16 @@ float64 data
       self.beats = []
       for i in range(0, length):
         val1 = terpsichore.msg.pair()
-        _x = val1
         start = end
-        end += 16
-        (_x.t, _x.data,) = _struct_2d.unpack(str[start:end])
+        end += 8
+        (val1.t,) = _struct_d.unpack(str[start:end])
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        pattern = '<%sd'%length
+        start = end
+        end += struct.calcsize(pattern)
+        val1.data = struct.unpack(pattern, str[start:end])
         self.beats.append(val1)
       start = end
       end += 4
@@ -98,10 +110,16 @@ float64 data
       self.events = []
       for i in range(0, length):
         val1 = terpsichore.msg.pair()
-        _x = val1
         start = end
-        end += 16
-        (_x.t, _x.data,) = _struct_2d.unpack(str[start:end])
+        end += 8
+        (val1.t,) = _struct_d.unpack(str[start:end])
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        pattern = '<%sd'%length
+        start = end
+        end += struct.calcsize(pattern)
+        val1.data = struct.unpack(pattern, str[start:end])
         self.events.append(val1)
       return self
     except struct.error as e:
@@ -118,13 +136,19 @@ float64 data
       length = len(self.beats)
       buff.write(_struct_I.pack(length))
       for val1 in self.beats:
-        _x = val1
-        buff.write(_struct_2d.pack(_x.t, _x.data))
+        buff.write(_struct_d.pack(val1.t))
+        length = len(val1.data)
+        buff.write(_struct_I.pack(length))
+        pattern = '<%sd'%length
+        buff.write(val1.data.tostring())
       length = len(self.events)
       buff.write(_struct_I.pack(length))
       for val1 in self.events:
-        _x = val1
-        buff.write(_struct_2d.pack(_x.t, _x.data))
+        buff.write(_struct_d.pack(val1.t))
+        length = len(val1.data)
+        buff.write(_struct_I.pack(length))
+        pattern = '<%sd'%length
+        buff.write(val1.data.tostring())
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(_x))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(_x))))
 
@@ -146,10 +170,16 @@ float64 data
       self.beats = []
       for i in range(0, length):
         val1 = terpsichore.msg.pair()
-        _x = val1
         start = end
-        end += 16
-        (_x.t, _x.data,) = _struct_2d.unpack(str[start:end])
+        end += 8
+        (val1.t,) = _struct_d.unpack(str[start:end])
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        pattern = '<%sd'%length
+        start = end
+        end += struct.calcsize(pattern)
+        val1.data = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
         self.beats.append(val1)
       start = end
       end += 4
@@ -157,14 +187,20 @@ float64 data
       self.events = []
       for i in range(0, length):
         val1 = terpsichore.msg.pair()
-        _x = val1
         start = end
-        end += 16
-        (_x.t, _x.data,) = _struct_2d.unpack(str[start:end])
+        end += 8
+        (val1.t,) = _struct_d.unpack(str[start:end])
+        start = end
+        end += 4
+        (length,) = _struct_I.unpack(str[start:end])
+        pattern = '<%sd'%length
+        start = end
+        end += struct.calcsize(pattern)
+        val1.data = numpy.frombuffer(str[start:end], dtype=numpy.float64, count=length)
         self.events.append(val1)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
 
 _struct_I = genpy.struct_I
-_struct_2d = struct.Struct("<2d")
+_struct_d = struct.Struct("<d")
