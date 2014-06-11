@@ -4,7 +4,8 @@
 # This ROS node takes in information from the WaveDNA software and converts it into trajectories for the drone to follow.
 
 # SUBSCRIBED TOPICS
-# /wavedna
+# /terpsichore/ableton_time
+# /terpsichore/music_data
 # /waypoint_request
 
 # PUBLISHED TOPICS
@@ -51,6 +52,7 @@ from std_msgs.msg import Bool
 ##################
 
 k = 0.5
+scale = 1.0
 
 
 #########################
@@ -83,14 +85,15 @@ class CreateTrajectory(object):
         self.point_buffer = []
 
         # Manage time for synchronization
-        self.last_time_check = 0.0
+        #self.last_time_check = 0.0
         self.cur_time = 0.0
 
         # Subscribe to the waypoint_request topic
         self.sub_request = rospy.Subscriber('/waypoint_request', Bool, self.process_request)
 
         # Subscribe to the WaveDNA data
-        self.sub_wavedna = rospy.Subscriber('/wavedna', bardata, self.buffer_data)
+        self.sub_wavedna = rospy.Subscriber('/terpsichore/music_data', bardata, self.buffer_data)
+        self.sub_time = rospy.Subscriber('/terpsichore/ableton_time', float64, self.update_time)
 
         # Publish to the desired_coordinates topic
         self.pub_desired = rospy.Publisher('/desired_coordinates', StateData)
@@ -99,25 +102,30 @@ class CreateTrajectory(object):
     def buffer_data(self, new_wavedna):
 
         # Update the time for synchronization
-        self.last_time_check = new_wavedna.time
-        self.cur_time = time()
+        #self.last_time_check = new_wavedna.time
+        #self.cur_time = time()
 
         # Remove any unnecessary data points (those already used)
         self.clean_buffers()
 
         # Add new data to the buffers
-        self.time_buffer.append(new_wavedna.beats(0).t)
-        self.point_buffer.append(new_wavedna.beats(0).data(0))
+        self.time_buffer.append(new_wavedna.events(0).t)
+        self.point_buffer.append(new_wavedna.events(0).data(0))
+    
+    # Keep time in sync with WaveDNA
+    def update_time(self, new_time):
+        self.cur_time = new_time
 
     # Remove any unnecessary points from buffers
     def clean_buffers(self):
 
         # Estimate the current time
-        est_time = time() - self.cur_time + self.last_time_check
+        #est_time = time() - self.cur_time + self.last_time_check
 
         # If the current time is past the 2nd item in the buffer, get rid
         # of the first. Repeat until time is between first and second items.
-        while (len(self.time_buffer) > 1) and (est_time > self.time_buffer(1)):
+        #while (len(self.time_buffer) > 1) and (est_time > self.time_buffer(1)):
+        while (len(self.time_buffer) > 1) and (self.cur_time > self.time_buffer(1)):
             self.time_buffer.pop(0)
             self.point_buffer.pop(0)
 
@@ -146,7 +154,7 @@ class CreateTrajectory(object):
         elif len(self.time_buffer) == 1:
             self.x = 0.0
             self.y = 0.0
-            self.z = self.point_buffer(0)
+            self.z = 1.0 + self.point_buffer(0)*scale
             self.vx = 0.0
             self.vy = 0.0
             self.vz = 0.0
@@ -161,8 +169,8 @@ class CreateTrajectory(object):
         else:
             total_time = self.time_buffer(1) - self.time_buffer(0)
             step_time = 0.75 * total_time * (1.0 - 2.0*math.fabs(0.5 - k))
-            p_initial = self.point_buffer(0)
-            p_final = self.point_buffer(1)
+            p_initial = 1.0 + self.point_buffer(0)*scale
+            p_final = 1.0 + self.point_buffer(1)*scale
             v_initial = 0.0
             v_final = 0.0
             est_time = time() - self.cur_time + self.last_time_check
