@@ -6,7 +6,7 @@
 
 # SUBSCRIBED TOPICS
 # /current_coordinates
-# /desired_coordinates
+# /path_coordinates
 
 # PUBLISHED TOPICS
 # /cmd_vel
@@ -169,7 +169,7 @@ class DroneController(DroneVideoDisplay):
     self.command = Twist()
 
     # Subscribe to the desired_coordinates topic
-    self.sub_des = rospy.Subscriber('/desired_coordinates', StateData, self.updateDesiredState)
+    self.sub_des = rospy.Subscriber('/path_coordinates', StateData, self.updateDesiredState)
 
     # Subscribe to the current_coordinates topic
     self.sub_cur = rospy.Subscriber('/current_coordinates', StateData, self.updateCurrentState)
@@ -212,7 +212,7 @@ class DroneController(DroneVideoDisplay):
   
   # Send a landing message to the ardrone driver
   def SendLand(self):
-    self.pubLand.publish(Empty(`))
+    self.pubLand.publish(Empty())
 
   # Publish requests for commands
   def requestWaypoint(self):
@@ -323,13 +323,21 @@ class DroneController(DroneVideoDisplay):
     roll_out_global = self.clamp(math.asin(ay / thrust), max_euler)
 
     # calculate the desired pitch using the desired roll
-    pitch_out_global = self.clamp(math.asin(ax / (thrust * math.cos(roll_out_global)), max_euler)
+    pitch_out_global = self.clamp(math.asin(ax / (thrust * math.cos(roll_out_global))), max_euler)
 
     # make sure yaw angles are a range that makes sense for proportional control
-    yaw_cur = (yaw_cur + 2.0*math.pi) if (yaw_cur < 0.0) else yaw_cur
-    yaw_des = (yaw_des + 2.0*math.pi) if (yaw_des < 0.0) else yaw_des
-    yaw_des = (yaw_des + 2.0*math.pi) if ((yaw_cur - yaw_des) > math.pi) else yaw_des
-    yaw_des = (yaw_des - 2.0*math.pi) if ((yaw_des - yaw_cur) > math.pi) else yaw_des
+    #yaw_cur = (yaw_cur + 2.0*math.pi) if (yaw_cur < 0.0) else yaw_cur
+    if yaw_cur < 0.0:
+        yaw_cur = yaw_cur + 2.0*math.pi
+    #yaw_des = (yaw_des + 2.0*math.pi) if (yaw_des < 0.0) else yaw_des
+    if yaw_des < 0.0:
+        yaw_des = yaw_des + 2.0*math.pi
+    #yaw_des = (yaw_des + 2.0*math.pi) if ((yaw_cur - yaw_des) > math.pi) else yaw_des
+    if (yaw_cur - yaw_des) > math.pi:
+        yaw_des = yaw_des + 2.0*math.pi
+    #yaw_des = (yaw_des - 2.0*math.pi) if ((yaw_des - yaw_cur) > math.pi) else yaw_des
+    if (yaw_des - yaw_cur) > math.pi:
+        yaw_des = yaw_des - 2.0*math.pi
 
     # calculate the desired yaw velocity and convert to a percentage of maximum yaw rate
     self.yaw_velocity_out = self.clamp((1.0 / tau_w) * (yaw_des - yaw_cur), max_yaw)

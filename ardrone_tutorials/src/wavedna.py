@@ -117,9 +117,6 @@ class CreateTrajectory(object):
     # Keep time in sync with WaveDNA
     def update_time(self, new_time):
         self.cur_time = new_time.data
-                
-        # REMOVE: DEBUGGING ONLY
-        self.process_request()
 
     # Remove any unnecessary points from buffers
     def clean_buffers(self):
