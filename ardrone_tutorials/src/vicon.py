@@ -4,7 +4,7 @@
 # This ROS node takes in information from VICON, transforms it, and sends it to the drone over the /current_coordinates topic.
 
 # SUBSCRIBED TOPICS
-# /vicon/ARDroneChris/ARDroneChris
+# /vicon/ARDroneShare/ARDroneShare
 
 # PUBLISHED TOPICS
 # /current_coordinates
