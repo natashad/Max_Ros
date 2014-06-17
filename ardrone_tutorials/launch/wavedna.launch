@@ -1,4 +1,5 @@
 <launch>
+  <node name="ardrone_driver" pkg="ardrone_autonomy" type="ardrone_driver" args="-ip 192.168.2.31" output="screen" required="True"/>
   <node pkg="vicon_bridge" type="vicon_bridge" name="vicon" output="screen">
     <param name="stream_mode" value="ClientPull" type="str" />
     <param name="datastream_hostport" value="192.168.2.102:801" type="str" />
@@ -11,8 +12,7 @@
     <param name="ARDroneShare/ARDroneShare/zero_pose/position/z"    value="0" type="double" />
   </node>
   <node name="vicon_coordinates" pkg="ardrone_tutorials" type="vicon.py" output="screen" required="True"/>
-  <node name="terpsichore" pkg="terpsichore" type="osc_test" output="screen" required="True"/>
+  <!-- <node name="terpsichore" pkg="terpsichore" type="osc_test" output="screen" required="True"/> -->
   <node name="wavedna" pkg="ardrone_tutorials" type="wavedna.py" output="screen" required="True"/>
   <node name="dsl_controller" pkg="ardrone_tutorials" type="dsl_controller.py" output="screen" required="True"/>
 </launch>
-

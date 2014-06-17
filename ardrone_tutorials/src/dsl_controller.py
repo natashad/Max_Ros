@@ -193,20 +193,20 @@ class DroneController(DroneVideoDisplay):
   # Sets the current command (used by both keyboard functions and controller)
   # If hover is turned on, will only set the hover command
   def SetCommand(self,roll=0.0,pitch=0.0,yaw_velocity=0.0,z_velocity=0.0):
-    if self.hover == 0:
+#    if self.hover == 0:
       self.command.linear.x = pitch
       self.command.linear.y = roll
       self.command.linear.z = z_velocity
       self.command.angular.z = yaw_velocity
-    else:
-      self.command.linear.x = 0.0
-      self.command.linear.y = 0.0
-      self.command.linear.z = 0.0
-      self.command.angular.z = 0.0
+#    else:
+#      self.command.linear.x = 0.0
+#      self.command.linear.y = 0.0
+#      self.command.linear.z = 0.0
+#      self.command.angular.z = 0.0
 
   # determine commands using the most recent data and send to the drone
   def SendCommand(self,event):
-    if(self.keyboard_override == 0) and (self.status == DroneStatus.Flying or self.status == DroneStatus.GotoHover or self.status == DroneStatus.Hovering):
+    # and (self.status == DroneStatus.Flying or self.status == DroneStatus.GotoHover or self.status == DroneStatus.Hovering):
       self.pubCommand.publish(self.command)
 
   # Send an emergency (or reset) message to the ardrone driver
@@ -238,21 +238,21 @@ class DroneController(DroneVideoDisplay):
   def updateCurrentState(self,cur_data):
 
     # update the state information
-    self.x = cur_data.x
-    self.y = cur_data.y
-    self.z = cur_data.z
+    self.x_cur = cur_data.x
+    self.y_cur = cur_data.y
+    self.z_cur = cur_data.z
 
-    self.vx = cur_data.vx
-    self.vy = cur_data.vy
-    self.vz = cur_data.vz
+    self.vx_cur = cur_data.vx
+    self.vy_cur = cur_data.vy
+    self.vz_cur = cur_data.vz
 
-    self.ax = cur_data.ax
-    self.ay = cur_data.ay
-    self.az = cur_data.az
+    self.ax_cur = cur_data.ax
+    self.ay_cur = cur_data.ay
+    self.az_cur = cur_data.az
 
-    self.roll = cur_data.roll
-    self.pitch = cur_data.pitch
-    self.yaw = cur_data.yaw
+    self.roll_cur = cur_data.roll
+    self.pitch_cur = cur_data.pitch
+    self.yaw_cur = cur_data.yaw
 
     # Request the desired state to compare with
     self.requestWaypoint()
@@ -281,7 +281,7 @@ class DroneController(DroneVideoDisplay):
     self.determineCommands()
 
     # Set the commands
-    self.SetCommand(self.roll_out, self.pitch_out, self.yaw_velocity_out, self.z_velocity_out)
+    #self.SetCommand(self.roll_out, self.pitch_out, self.yaw_velocity_out, self.z_velocity_out)
 
   # This method calculates the correct output values and sends them to the drone.
   def determineCommands(self):
@@ -325,12 +325,16 @@ class DroneController(DroneVideoDisplay):
 
     # calculate the acceleration in y (global coordinates)
     ay = (2.0 * zeta / tau_y) * (vy_des - vy_cur) + (1.0 / (tau_y * tau_y)) * (y_des - y_cur)
+    
+    # clamp ax and ay for use in arcsin
+    ay_clamped = self.clamp(ay / thrust, 1.0)
 
     # calculate the desired roll
-    roll_out_global = self.clamp(math.asin(ay / thrust), max_euler)
+    roll_out_global = self.clamp(math.asin(ay_clamped), max_euler)
+    ax_clamped = self.clamp(ax / (thrust * math.cos(roll_out_global)),1.0)
 
     # calculate the desired pitch using the desired roll
-    pitch_out_global = self.clamp(math.asin(ax / (thrust * math.cos(roll_out_global))), max_euler)
+    pitch_out_global = self.clamp(math.asin(ax_clamped), max_euler)
 
     # make sure yaw angles are a range that makes sense for proportional control
     #yaw_cur = (yaw_cur + 2.0*math.pi) if (yaw_cur < 0.0) else yaw_cur
@@ -355,8 +359,9 @@ class DroneController(DroneVideoDisplay):
     self.roll_out = roll_out_global * math.cos(yaw_cur) - pitch_out_global * math.sin(yaw_cur)
 
     # send the commands to the drone if the keyboard is not currently being used
-    self.SetCommand(self.roll_out, self.pitch_out, self.yaw_velocity_out, self.z_velocity_out)
-
+    if(self.keyboard_override == 0):
+      self.SetCommand(self.roll_out, self.pitch_out, self.yaw_velocity_out, self.z_velocity_out)
+      
   # This method is called when a key is pressed. It overrides the automated commands.
   def keyPressEvent(self, event):
     key = event.key()

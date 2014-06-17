@@ -97,7 +97,7 @@ class CreateTrajectory(object):
         self.sub_time = rospy.Subscriber('/terpsichore/ableton_time', Float64, self.update_time)
 
         # Publish to the desired_coordinates topic
-        self.pub_desired = rospy.Publisher('/desired_coordinates', StateData)
+        self.pub_desired = rospy.Publisher('/path_coordinates', StateData)
 
     # Add new WaveDNA data to the buffers
     def buffer_data(self, new_wavedna):
@@ -132,7 +132,7 @@ class CreateTrajectory(object):
             self.point_buffer.pop(0)
 
     # Process a request for a waypoint
-    def process_request(self):
+    def process_request(self, unneeded):
 
         # Remove any unnecessary data points
         self.clean_buffers()
