@@ -15,13 +15,13 @@ _tempo = float(160)
 _resolution = float(480)
 _bar = 0
 
-addrs = ['/transport/timesig', '/transport/tempo', '/transport/resolution', '/transport/units', '/transport/beat', '/transport/bar']
+addrs = ['/transport/tempo', '/transport/resolution', '/transport/units', '/transport/beat', '/transport/bar']
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument("--ip", default="127.0.0.1",
+  parser.add_argument("--ip", default="192.168.2.112",
       help="The ip of the OSC server")
-  parser.add_argument("--port", type=int, default=5005,
+  parser.add_argument("--port", type=int, default=8000,
       help="The port the OSC server is listening on")
   args = parser.parse_args()
 
@@ -36,11 +36,17 @@ if __name__ == "__main__":
     _bar = int(float(_tempo * timeDeltaMins)/_time_sig_denom)
 
     # TODO: Calculate
-    _units = 260
+    _units = float(260)
     _time_sig = str(_time_sig_num) + " " + str(_time_sig_denom)
 
+    msg = osc_message_builder.OscMessageBuilder(address = '/transport/timesig')
+    msg.add_arg(_time_sig_num)
+    msg.add_arg(_time_sig_denom)
+    msg = msg.build()
+    client.send(msg)
+    print("Sending message")
 
-    addr_params = [_time_sig, _tempo, _resolution, _units, _beat, _bar]
+    addr_params = [_tempo, _resolution, _units, _beat, _bar]
 
     for ind, addr in enumerate(addrs):
       msg = osc_message_builder.OscMessageBuilder(address = addr)
@@ -50,31 +56,31 @@ if __name__ == "__main__":
       print("Sending message")
 
 
-    # NOTE DATA MESSAGE
-    msg = osc_message_builder.OscMessageBuilder(address = "/clip/notes")
-    msg.add_arg("Kick")
-    msg.add_arg(144)
-    msg.add_arg("fake_name")
-    msg.add_arg(10)
-    msg.add_arg(2)
+    # # NOTE DATA MESSAGE
+    # msg = osc_message_builder.OscMessageBuilder(address = "/clip/notes")
+    # msg.add_arg("Kick")
+    # msg.add_arg(144)
+    # msg.add_arg("fake_name")
+    # msg.add_arg(10)
+    # msg.add_arg(2)
 
-    # note 1
-    msg.add_arg(1)
-    msg.add_arg(0.5)
-    msg.add_arg(0.5)
-    msg.add_arg(100)
-    msg.add_arg(0)
+    # # note 1
+    # msg.add_arg(1)
+    # msg.add_arg(0.5)
+    # msg.add_arg(0.5)
+    # msg.add_arg(100)
+    # msg.add_arg(0)
 
-    # note 2
-    msg.add_arg(10)
-    msg.add_arg(4.75)
-    msg.add_arg(0.5)
-    msg.add_arg(100)
-    msg.add_arg(0)
+    # # note 2
+    # msg.add_arg(10)
+    # msg.add_arg(4.75)
+    # msg.add_arg(0.5)
+    # msg.add_arg(100)
+    # msg.add_arg(0)
 
-    msg = msg.build()
-    client.send(msg)
-    print("Sending message")
+    # msg = msg.build()
+    # client.send(msg)
+    # print("Sending message")
 
 
     time.sleep(0.5)
