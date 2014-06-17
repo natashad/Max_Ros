@@ -191,11 +191,18 @@ class DroneController(DroneVideoDisplay):
     self.hover = 0
 
   # Sets the current command (used by both keyboard functions and controller)
+  # If hover is turned on, will only set the hover command
   def SetCommand(self,roll=0.0,pitch=0.0,yaw_velocity=0.0,z_velocity=0.0):
-    self.command.linear.x = pitch
-    self.command.linear.y = roll
-    self.command.linear.z = z_velocity
-    self.command.angular.z = yaw_velocity
+    if self.hover == 0:
+      self.command.linear.x = pitch
+      self.command.linear.y = roll
+      self.command.linear.z = z_velocity
+      self.command.angular.z = yaw_velocity
+    else:
+      self.command.linear.x = 0.0
+      self.command.linear.y = 0.0
+      self.command.linear.z = 0.0
+      self.command.angular.z = 0.0
 
   # determine commands using the most recent data and send to the drone
   def SendCommand(self,event):
