@@ -24,25 +24,25 @@ struct Position {
 	int bar;
 	int beat;
 	float unit;
+	float resolution;
 	
-	Position():bar(1), beat(1), unit(0){};
-	Position(int a):bar(a), beat(0), unit(0){};
-	float toFloat(TimeSignature, double);
+	Position():bar(1), beat(1), unit(0), resolution(RESOLUTION){};
+	Position(int a):bar(a), beat(0), unit(0), resolution(RESOLUTION){};
+	float toFloat(TimeSignature	);
 	string toString();
 	bool operator<(const Position&) const;
 	bool operator>(const Position&) const;
 	bool operator==(const Position&);
 	
-	static Position parse(float, double, TimeSignature);
+	static Position parse(float, TimeSignature);
 };
 
 struct Transport {
 	Position position;
 	float tempo;
-	float resolution;
 	TimeSignature timeSignature;
 
-	Transport() : tempo(0), resolution(RESOLUTION), timeSignature() {}
+	Transport() : tempo(0), timeSignature() {}
 	string toString();
 	double toSec();
 	
@@ -85,7 +85,7 @@ struct Track {
 typedef void (*StringCallbackType)(string);
 typedef void (*TransportCallbackType)(Transport);
 typedef void (*PlaybackCallbackType)(Playback);
-typedef void (*ClipUpdateCallbackType)(Clip);
+typedef void (*ClipUpdateCallbackType)(Clip*);
 
 class LRPacketListener : public osc::OscPacketListener {
     protected:
@@ -94,8 +94,6 @@ class LRPacketListener : public osc::OscPacketListener {
         vector<TransportCallbackType> transportCallbacks;
 		vector<PlaybackCallbackType> playbackCallbacks;
 		vector<ClipUpdateCallbackType> clipUpdateCallbacks;
-
-        bool barUpdated, beatUpdated, unitUpdated, tempoUpdated, timeSigUpdated, resUpdated;
         
         virtual void ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& remoteEndpoint);
         
@@ -105,7 +103,7 @@ class LRPacketListener : public osc::OscPacketListener {
         ~LRPacketListener();
         
 		vector<Track> tracks;
-		map<int, Clip> clips;		
+		map<int, Clip*> clips;		
         Transport transport;
         
         void registerStringCallback(StringCallbackType cb);

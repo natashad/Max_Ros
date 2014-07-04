@@ -29,9 +29,11 @@ rosbuild_genmsg()
 set(OSC_RECEIVER_SOURCE_FILES
     src/main.cpp       
     src/LRReceiver.cpp
+    src/Translator.cpp
 )
 set(OSC_RECEIVER_HEADER_FILES    
     src/LRReceiver.h
+    src/Translator.h
 )
 
 # set required libs and headers

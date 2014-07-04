@@ -1,4 +1,5 @@
 #include "LRReceiver.h"
+#include "Translator.h"
 #include <oscpack/ip/UdpSocket.h>
 #include <oscpack/osc/OscOutboundPacketStream.h>
 #include <std_msgs/Float64.h>
@@ -12,7 +13,7 @@
 #include <SFML/Graphics.hpp>
 #include <X11/Xlib.h>
  
-#define PORT 8000
+#define PORT 7100
 #define OUTPUT_BUFFER_SIZE 1024
 char buffer[OUTPUT_BUFFER_SIZE];
 
@@ -29,10 +30,12 @@ sf::RectangleShape stop_shape(sf::Vector2f(70, 70));
 std::string offset_string;
 sf::Text offset_text;
 sf::Text debug_text;
+sf::CircleShape baton(10, 3);
 
 std::string ADDRESS;
 LRPacketListener* listener;
 UdpListeningReceiveSocket* receive_socket;
+Conductor conductor;
 
 ros::Publisher data_pub;
 ros::Time last_update_time;
@@ -63,7 +66,7 @@ void sync(Transport tr){
 			//if(tr.timeSignature.beatsPerBar % 2 == 0){
 				for(int i = 1; i <= tr.timeSignature.beatsPerBar; i++){
 					double beats_ahead = (1 * tr.timeSignature.beatsPerBar) + (i - 1);	
-    				double beat_time = ((double)(beats_ahead + (tr.position.unit/tr.resolution))/tr.tempo) * 60.0 + cur_t;
+    				double beat_time = ((double)(beats_ahead + (tr.position.unit/tr.position.resolution))/tr.tempo) * 60.0 + cur_t;
 					
 					terpsichore::pair b;
 					std::vector<double> d;
@@ -84,37 +87,32 @@ void sync(Transport tr){
     		
     		std::vector<terpsichore::pair> events;
     		//grab the first clip in the map
-    		std::map<int, Clip>::iterator it = listener->clips.begin();
+    		std::map<int, Clip*>::iterator it = listener->clips.begin();
     		if(it != listener->clips.end()){
-				Clip c = it->second;
+				Clip* c = it->second;
 				
-				for(std::multimap<Position, Note>::iterator it = c.notes.begin(); it != c.notes.end(); it++){
+				//std::cout << "now in " << tr.position.toString() << std::endl;
+				for(std::multimap<Position, Note>::iterator it = c->notes.begin(); it != c->notes.end(); it++){
 					Position p = it->first;
-					if(p.bar > tr.position.bar){
-						std::cout << "breaking" << std::endl;
-						break;
-					}
-					else if(p.bar == tr.position.bar)
-					{
-						std::cout << "skipping" << std::endl;
-						continue;
-					}else if(p.bar >= (tr.position.bar + 1) % c.length.bar){
-						std::cout << "also skipping" << std::endl;
+					if(p.bar == (tr.position.bar + 1) || (tr.position.bar) % c->length.bar + 1 == p.bar){
+						Note n = it->second;
+						terpsichore::pair d;
+						d.t = (1.0 * tr.timeSignature.beatsPerBar + p.toFloat(tr.timeSignature))/tr.tempo * 60.0 + cur_t;
+						double scaled_pitch = (double)(n.pitch)/(double)(108);
+						double scaled_vel = double(n.velocity)/(double)(127);
+		
+						std::vector<double> info;
+						info.push_back(scaled_pitch);
+						info.push_back((double)n.duration);
+						info.push_back(scaled_vel);
+						d.data = info;
+						events.push_back(d);
+						//std::cout << "added note in " << p.toString() << std::endl;
+					}else{
+						//std::cout << "not adding the note in " << p.toString() << std::endl;
 						continue;
 					}
 			
-					Note n = it->second;
-					terpsichore::pair d;
-					d.t = (1.0 * tr.timeSignature.beatsPerBar + p.toFloat(tr.timeSignature, tr.resolution))/tr.tempo * 60.0 + cur_t;
-					double scaled_pitch = (double)(n.pitch)/(double)(108);
-					double scaled_vel = double(n.velocity)/(double)(127);
-		
-					std::vector<double> info;
-					info.push_back(scaled_pitch);
-					info.push_back((double)n.duration);
-					info.push_back(scaled_vel);
-					d.data = info;
-					events.push_back(d);
 				}
 				bardata.events = events;
 			}
@@ -126,16 +124,16 @@ void sync(Transport tr){
     last_transport = tr;
 }
 
-void loadClip(Clip c){
+void loadClip(Clip* c){
 	std::vector<terpsichore::pair> note_data;
-	for(std::multimap<Position, Note>::iterator it = c.notes.begin(); it != c.notes.end(); it++){
+	for(std::multimap<Position, Note>::iterator it = c->notes.begin(); it != c->notes.end(); it++){
 		Position p = it->first;
 		if(p.bar > 2)
 			break;
 			
 		Note n = it->second;
 		terpsichore::pair d;
-		d.t = p.toFloat(last_transport.timeSignature, last_transport.resolution)/last_transport.tempo * 60.0;
+		d.t = p.toFloat(last_transport.timeSignature)/last_transport.tempo * 60.0;
 		double scaled_pitch = (double)(n.pitch - 21)/(double)(108-21);
 		double scaled_vel = double(n.velocity)/(double)(127);
 		
@@ -198,6 +196,11 @@ void listen(){
     receive_socket->Run();
 }
 
+void update_baton(Transport tr){
+	conductor.calculatePosition(tr);
+	baton.setPosition(300 + 200*conductor.y, 400 - 200*conductor.z);
+}
+
 void ros_stuff(){
 	int one = 1;
 	int& argc = one;
@@ -246,6 +249,7 @@ int main(int argc, char* argv[])
     
     //Initialize OSC stuff
     UdpTransmitSocket transmit_socket( IpEndpointName( ADDRESS.c_str(), PORT ) );
+    
     listener = new LRPacketListener();
     //listener->registerStringCallback(nothing);
     listener->registerTransportCallback(sync);
@@ -253,12 +257,14 @@ int main(int argc, char* argv[])
     listener->registerClipUpdateCallback(loadClip);
     receive_socket = new UdpListeningReceiveSocket(IpEndpointName( IpEndpointName::ANY_ADDRESS, PORT ), listener);
     
-    
     //Set up threads
     std::thread listen_thread(listen);
 
 	//interupt quits
     signal(SIGINT, [](int signum){std::cout << "okay" << std::endl; quit = true; receive_socket->Break(); receive_socket->AsynchronousBreak();});
+    
+    //conductor
+    listener->registerTransportCallback(update_baton);
     
     //SFML
     sf::Font font;
@@ -271,6 +277,7 @@ int main(int argc, char* argv[])
 	play_shape.setFillColor(sf::Color::Green);
 	stop_shape.setPosition(700, 10);
 	stop_shape.setFillColor(sf::Color::Red);
+	baton.setFillColor(sf::Color::Red);
 
 	// select the font
 	transport_text.setFont(font); // font is a sf::Font
@@ -301,6 +308,10 @@ int main(int argc, char* argv[])
     sf::RenderWindow window(sf::VideoMode(800, 600), "Terpsichore", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
     
+        
+    //request initial information
+    send("/terpsichore", (int)1, transmit_socket);
+    
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -324,13 +335,13 @@ int main(int argc, char* argv[])
         // draw the notes of the currently playing clips
         double y = 100.0;
         double scale = 50.0;
-        for(std::map<int, Clip>::iterator clip_it = listener->clips.begin(); clip_it != listener->clips.end(); clip_it++){
+        for(std::map<int, Clip*>::iterator clip_it = listener->clips.begin(); clip_it != listener->clips.end(); clip_it++){
         	
-        	Clip c = clip_it->second;
-        	for(std::multimap<Position, Note>::iterator note_it = c.notes.begin(); note_it != c.notes.end(); note_it++){
+        	Clip* c = clip_it->second;
+        	for(std::multimap<Position, Note>::iterator note_it = c->notes.begin(); note_it != c->notes.end(); note_it++){
         		Position p = note_it->first;
         		Note n = note_it->second;
-        		double x = p.toFloat(listener->transport.timeSignature, listener->transport.resolution) * scale + 10;
+        		double x = p.toFloat(listener->transport.timeSignature) * scale + 10;
         		double w = n.duration * scale;
         		double h = n.pitch;
         		
@@ -360,6 +371,8 @@ int main(int argc, char* argv[])
 		}else{
 			window.draw(stop_shape);
 		}
+        //draw the baton point;
+        window.draw(baton);
 
         // end the current frame
         window.display();

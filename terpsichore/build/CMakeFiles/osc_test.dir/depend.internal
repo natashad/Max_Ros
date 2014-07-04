@@ -4,10 +4,15 @@
 CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o
  /home/wavy/workspace/ros/terpsichore/src/LRReceiver.cpp
  /home/wavy/workspace/ros/terpsichore/src/LRReceiver.h
+CMakeFiles/osc_test.dir/src/Translator.cpp.o
+ /home/wavy/workspace/ros/terpsichore/src/LRReceiver.h
+ /home/wavy/workspace/ros/terpsichore/src/Translator.cpp
+ /home/wavy/workspace/ros/terpsichore/src/Translator.h
 CMakeFiles/osc_test.dir/src/main.cpp.o
  ../msg_gen/cpp/include/terpsichore/bardata.h
  ../msg_gen/cpp/include/terpsichore/pair.h
  /home/wavy/workspace/ros/terpsichore/src/LRReceiver.h
+ /home/wavy/workspace/ros/terpsichore/src/Translator.h
  /home/wavy/workspace/ros/terpsichore/src/main.cpp
  /opt/ros/hydro/include/XmlRpcDecl.h
  /opt/ros/hydro/include/XmlRpcValue.h

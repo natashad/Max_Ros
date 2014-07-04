@@ -130,16 +130,60 @@ CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o.provides: CMakeFiles/osc_test.dir/s
 
 CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o.provides.build: CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o
 
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: CMakeFiles/osc_test.dir/flags.make
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: ../src/Translator.cpp
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: ../manifest.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/catkin/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/console_bridge/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/cpp_common/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/rostime/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/roscpp_traits/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/roscpp_serialization/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/genmsg/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/genpy/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/message_runtime/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/gencpp/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/genlisp/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/message_generation/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/rosbuild/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/rosconsole/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/std_msgs/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/rosgraph_msgs/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/xmlrpcpp/package.xml
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: /opt/ros/hydro/share/roscpp/package.xml
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/terpsichore/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/osc_test.dir/src/Translator.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/osc_test.dir/src/Translator.cpp.o -c /home/wavy/workspace/ros/terpsichore/src/Translator.cpp
+
+CMakeFiles/osc_test.dir/src/Translator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/osc_test.dir/src/Translator.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/terpsichore/src/Translator.cpp > CMakeFiles/osc_test.dir/src/Translator.cpp.i
+
+CMakeFiles/osc_test.dir/src/Translator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/osc_test.dir/src/Translator.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/terpsichore/src/Translator.cpp -o CMakeFiles/osc_test.dir/src/Translator.cpp.s
+
+CMakeFiles/osc_test.dir/src/Translator.cpp.o.requires:
+.PHONY : CMakeFiles/osc_test.dir/src/Translator.cpp.o.requires
+
+CMakeFiles/osc_test.dir/src/Translator.cpp.o.provides: CMakeFiles/osc_test.dir/src/Translator.cpp.o.requires
+	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.o.provides.build
+.PHONY : CMakeFiles/osc_test.dir/src/Translator.cpp.o.provides
+
+CMakeFiles/osc_test.dir/src/Translator.cpp.o.provides.build: CMakeFiles/osc_test.dir/src/Translator.cpp.o
+
 # Object files for target osc_test
 osc_test_OBJECTS = \
 "CMakeFiles/osc_test.dir/src/main.cpp.o" \
-"CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o"
+"CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o" \
+"CMakeFiles/osc_test.dir/src/Translator.cpp.o"
 
 # External object files for target osc_test
 osc_test_EXTERNAL_OBJECTS =
 
 ../bin/osc_test: CMakeFiles/osc_test.dir/src/main.cpp.o
 ../bin/osc_test: CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o
+../bin/osc_test: CMakeFiles/osc_test.dir/src/Translator.cpp.o
 ../bin/osc_test: CMakeFiles/osc_test.dir/build.make
 ../bin/osc_test: CMakeFiles/osc_test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable ../bin/osc_test"
@@ -151,6 +195,7 @@ CMakeFiles/osc_test.dir/build: ../bin/osc_test
 
 CMakeFiles/osc_test.dir/requires: CMakeFiles/osc_test.dir/src/main.cpp.o.requires
 CMakeFiles/osc_test.dir/requires: CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o.requires
+CMakeFiles/osc_test.dir/requires: CMakeFiles/osc_test.dir/src/Translator.cpp.o.requires
 .PHONY : CMakeFiles/osc_test.dir/requires
 
 CMakeFiles/osc_test.dir/clean:

@@ -4,6 +4,7 @@ FILE(REMOVE_RECURSE
   "../src/terpsichore/msg"
   "CMakeFiles/osc_test.dir/src/main.cpp.o"
   "CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o"
+  "CMakeFiles/osc_test.dir/src/Translator.cpp.o"
   "../bin/osc_test.pdb"
   "../bin/osc_test"
 )

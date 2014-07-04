@@ -4,9 +4,14 @@
 CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o: ../src/LRReceiver.cpp
 CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o: ../src/LRReceiver.h
 
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: ../src/LRReceiver.h
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: ../src/Translator.cpp
+CMakeFiles/osc_test.dir/src/Translator.cpp.o: ../src/Translator.h
+
 CMakeFiles/osc_test.dir/src/main.cpp.o: ../msg_gen/cpp/include/terpsichore/bardata.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: ../msg_gen/cpp/include/terpsichore/pair.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: ../src/LRReceiver.h
+CMakeFiles/osc_test.dir/src/main.cpp.o: ../src/Translator.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/XmlRpcDecl.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/XmlRpcValue.h

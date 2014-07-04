@@ -11,11 +11,11 @@ TimeSignature TimeSignature::parse(string s){
 
 string TimeSignature::toString(){
     stringstream ss;
-    ss << beatUnit << "/" << beatsPerBar;
+    ss << beatsPerBar << "/" << beatUnit;
     return ss.str();
 }
 
-float Position::toFloat(TimeSignature ts, double resolution){
+float Position::toFloat(TimeSignature ts){
 	return ((bar - 1)*ts.beatsPerBar) + (beat - 1) + unit/resolution;
 }
 
@@ -63,48 +63,49 @@ bool Position::operator==(const Position& d){
 	return (bar == d.bar) && (beat == d.beat) && abs(unit - d.unit) < 10.0;
 }
 
-Position Position::parse(float pos, double resolution, TimeSignature ts){
+Position Position::parse(float pos, TimeSignature ts){
 	Position result;
 	result.bar = floor(pos/ts.beatsPerBar) + 1.0;
 	result.beat = fmod(pos, (float)ts.beatsPerBar) + 1.0;
 	float junk;
-	result.unit = modf(pos, &junk)*resolution;
+	//assume 480 ppq
+	result.unit = modf(pos, &junk)*RESOLUTION;
 	return result;
 }
 
 string Transport::toString(){
     stringstream ss;
     ss << position.bar << "." << position.beat << "." << position.unit << " at " << tempo << " bpm and " << 
-        resolution << " ppq in " << timeSignature.toString() << " time";
+        position.resolution << " ppq in " << timeSignature.toString() << " time";
     return ss.str();
 }
 
 double Transport::toSec(){
 	int beats = ((position.bar - 1) * timeSignature.beatsPerBar) + (position.beat - 1);
-    double t = ((double)(beats + (position.unit/resolution))/tempo) * 60.0;
+    double t = ((double)(beats + (position.unit/position.resolution))/tempo) * 60.0;
     return t;
 }
 
 const Transport Transport::operator+(const Transport& other){
-	double num_beats_me = ((position.bar - 1.0)*timeSignature.beatsPerBar) + (position.beat - 1.0) + position.unit/resolution;
-	double num_beats_other = ((other.position.bar - 1.0)*other.timeSignature.beatsPerBar) + (other.position.beat - 1.0) + other.position.unit/other.resolution;
+	double num_beats_me = ((position.bar - 1.0)*timeSignature.beatsPerBar) + (position.beat - 1.0) + position.unit/position.resolution;
+	double num_beats_other = ((other.position.bar - 1.0)*other.timeSignature.beatsPerBar) + (other.position.beat - 1.0) + other.position.unit/other.position.resolution;
 	double num_beats_total = num_beats_me + num_beats_other;
 	
 	//keeping own time signature and tempo
 	Transport result;
 	result.position.bar = floor(num_beats_total/timeSignature.beatsPerBar) + 1.0;
 	result.position.beat = fmod(num_beats_total, (double)timeSignature.beatsPerBar) + 1.0;
+	result.position.resolution = this->position.resolution;
 	double junk;
-	result.position.unit = modf(num_beats_total, &junk)*resolution;
+	result.position.unit = modf(num_beats_total, &junk)*position.resolution;
 	result.tempo = this->tempo;
 	result.timeSignature = this->timeSignature;
-	result.resolution = this->resolution;
 	return result;
 }
 
 const Transport Transport::operator-(const Transport& other){
-	double num_beats_me = ((position.bar - 1.0)*timeSignature.beatsPerBar) + (position.beat - 1.0) + position.unit/resolution;
-	double num_beats_other = ((other.position.bar - 1.0)*other.timeSignature.beatsPerBar) + (other.position.beat - 1.0) + other.position.unit/other.resolution;
+	double num_beats_me = ((position.bar - 1.0)*timeSignature.beatsPerBar) + (position.beat - 1.0) + position.unit/position.resolution;
+	double num_beats_other = ((other.position.bar - 1.0)*other.timeSignature.beatsPerBar) + (other.position.beat - 1.0) + other.position.unit/other.position.resolution;
 	double num_beats_total = num_beats_me - num_beats_other;
 	
 	//keeping own time signature and tempo
@@ -112,10 +113,10 @@ const Transport Transport::operator-(const Transport& other){
 	result.position.bar = floor(num_beats_total/timeSignature.beatsPerBar) + 1.0;
 	result.position.beat = fmod(num_beats_total, (double)timeSignature.beatsPerBar) + 1.0;
 	double junk;
-	result.position.unit = modf(num_beats_total, &junk)*resolution;
+	result.position.unit = modf(num_beats_total, &junk)*position.resolution;
 	result.tempo = this->tempo;
 	result.timeSignature = this->timeSignature;
-	result.resolution = this->resolution;
+	result.position.resolution = this->position.resolution;
 	return result;
 }
 
@@ -123,7 +124,8 @@ LRPacketListener::LRPacketListener(){
 };
 
 LRPacketListener::~LRPacketListener(){
-	for(map<int,Clip>::iterator it = clips.begin(); it != clips.end(); it++){
+	for(map<int,Clip*>::iterator it = clips.begin(); it != clips.end(); it++){
+		delete it->second;
 	}
 };
 
@@ -156,38 +158,11 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
             
             osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
             
-            if(type.find("/bar") == 0){
-                args >> transport.position.bar >> osc::EndMessage;
-                barUpdated = true;
-            }else if(type.find("/beat") == 0){
-                args >> transport.position.beat >> osc::EndMessage;
-                beatUpdated = true;
-            }else if(type.find("/unit") == 0){
-                args >> transport.position.unit >> osc::EndMessage;
-                unitUpdated = true;
-            }else if(type.find("/tempo") == 0){
-                args >> transport.tempo >> osc::EndMessage;
-                tempoUpdated = true;
-            }else if(type.find("/resolution") == 0){
-                args >> transport.resolution >> osc::EndMessage;
-                resUpdated = true;
-            }else if(type.find("/timesig") == 0){
-                args >> transport.timeSignature.beatUnit >> transport.timeSignature.beatsPerBar >> osc::EndMessage;
-                timeSigUpdated = true;
-            }
-            
-            bool changed = (barUpdated && beatUpdated && unitUpdated) && (tempoUpdated) && (timeSigUpdated) && (resUpdated);
-            
-            if(changed){
-                for(vector<TransportCallbackType>::iterator it = transportCallbacks.begin(); it != transportCallbacks.end(); ++it){
-                    (*it)(transport);
-                }
-                barUpdated = false;
-                beatUpdated = false;
-                unitUpdated = false;
-                tempoUpdated = false;
-                timeSigUpdated = false;
-                resUpdated = false;
+            args >> transport.position.bar >> transport.position.beat >> transport.position.unit >> transport.position.resolution 
+            	>> transport.tempo >> transport.timeSignature.beatsPerBar >> transport.timeSignature.beatUnit >> osc::EndMessage;
+            	
+            for(vector<TransportCallbackType>::iterator it = transportCallbacks.begin(); it != transportCallbacks.end(); ++it){
+                (*it)(transport);
             }
         }else if(address.find("/playback") == 0){
 			osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
@@ -203,18 +178,18 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
             }
         }else if(address.find("/track") == 0){
     	}else if(address.find("/clip") == 0){
-				osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
-    		
-				const char* clip_name_cstr = (arg++)->AsString();
-				string clip_name = clip_name_cstr;
-				cout << clip_name << "\t";
-				int clip_id = (arg++)->AsInt32();
-				cout << clip_id << "\t";
-				const char* track_name_cstr = (arg++)->AsString();
-				string track_name = track_name_cstr;
-				cout << track_name << "\t";
-				int track_id = (arg++)->AsInt32();
-				cout << track_id << "\t";
+			osc::ReceivedMessage::const_iterator arg = m.ArgumentsBegin();
+		
+			const char* clip_name_cstr = (arg++)->AsString();
+			string clip_name = clip_name_cstr;
+			cout << clip_name << "\t";
+			int clip_id = (arg++)->AsInt32();
+			cout << clip_id << "\t";
+			const char* track_name_cstr = (arg++)->AsString();
+			string track_name = track_name_cstr;
+			cout << track_name << "\t";
+			int track_id = (arg++)->AsInt32();
+			cout << track_id << "\t";
     		
     		string type = address.substr(5, string::npos);
     		if(type.find("/notes") == 0){
@@ -222,7 +197,7 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
 				cout << numnotes << endl;
 				multimap<Position, Note>* notes = (multimap<Position, Note>*)0;
 				    		
-				map<int, Clip>::iterator it = clips.find(clip_id);
+				map<int, Clip*>::iterator it = clips.find(clip_id);
 				Clip* c;
 				if(it == clips.end()){
 					//new clip, create it
@@ -231,18 +206,17 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
 					notes = &(c->notes);
 				}else{
 					//found it
-					Clip old_c = it->second;
-					c = new Clip(old_c);
+					Clip* old_c = it->second;
+					c = new Clip(*old_c);
 					notes = &(c->notes);
 					clips.erase(clip_id);
-					delete &old_c;
 				}
 				
 				for(int i = 0; i < numnotes; i++){
 					Note n;
 					n.pitch = (arg++)->AsInt32();
 					cout << n.pitch << "\t";
-					Position pos = Position::parse((arg++)->AsFloat(), transport.resolution, transport.timeSignature);
+					Position pos = Position::parse((arg++)->AsFloat(), transport.timeSignature);
 					cout << pos.toString() << "\t";
 					n.duration = (arg++)->AsFloat();
 					cout << n.duration << "\t";
@@ -251,18 +225,43 @@ void LRPacketListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEnd
 					int muted = (arg++)->AsInt32();
 					n.muted = muted != 0;
 					cout << n.muted << "\t";
+					
+					//Check if the note already exists
+					pair<multimap<Position, Note>::iterator, multimap<Position, Note>::iterator> existing_notes = notes->equal_range(pos);
+					for(multimap<Position, Note>::iterator it2 = existing_notes.first; it2 != existing_notes.second; ++it2){
+						Note n2 = it2->second;
+						//same pitch?
+						if(n2.pitch == n.pitch){
+							//overwrite
+							notes->erase(it2);
+						}
+					}
+					
 					notes->insert(pair<Position, Note>(pos, n));
 					cout << "added a note at " << pos.toString() << " to clip " << clip_id << endl;
 				}
-				clips.insert(std::pair<int, Clip>(clip_id, *c));
+				clips.insert(std::pair<int, Clip*>(clip_id, c));
 				cout << "number of notes in this clip: " << notes->size() << endl;
 				for(vector<ClipUpdateCallbackType>::iterator it = clipUpdateCallbacks.begin(); it != clipUpdateCallbacks.end(); ++it){
 					cout << "calling callback....";
-                    (*it)(*c);
+                    (*it)(c);
                     cout << "done" << endl;
                 }
     		}else if(type.find("/playback") == 0){
+    			bool playing = ((arg++)->AsInt32() <= 0 ? false : true);
+    			bool triggered = ((arg++)->AsInt32() <= 0 ? false : true);
     			
+    			map<int, Clip*>::iterator it = clips.find(clip_id);
+				Clip* c;
+				if(it == clips.end()){
+					//clip doesn't exist?
+					cerr << "I don't have clip id " << clip_id << endl;
+				}else{
+					//found it
+					c = it->second;
+					c->isPlaying = playing;
+					c->isTriggered = triggered;
+				}
     		}
         }else{
             string s;

@@ -472,6 +472,30 @@ src/LRReceiver.cpp.s:
 	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/LRReceiver.cpp.s
 .PHONY : src/LRReceiver.cpp.s
 
+src/Translator.o: src/Translator.cpp.o
+.PHONY : src/Translator.o
+
+# target to build an object file
+src/Translator.cpp.o:
+	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.o
+.PHONY : src/Translator.cpp.o
+
+src/Translator.i: src/Translator.cpp.i
+.PHONY : src/Translator.i
+
+# target to preprocess a source file
+src/Translator.cpp.i:
+	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.i
+.PHONY : src/Translator.cpp.i
+
+src/Translator.s: src/Translator.cpp.s
+.PHONY : src/Translator.s
+
+# target to generate assembly for a file
+src/Translator.cpp.s:
+	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.s
+.PHONY : src/Translator.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -535,6 +559,9 @@ help:
 	@echo "... src/LRReceiver.o"
 	@echo "... src/LRReceiver.i"
 	@echo "... src/LRReceiver.s"
+	@echo "... src/Translator.o"
+	@echo "... src/Translator.i"
+	@echo "... src/Translator.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
