@@ -7,6 +7,7 @@
 # SUBSCRIBED TOPICS
 # /current_coordinates
 # /path_coordinates
+# /ardrone/navdata
 
 # PUBLISHED TOPICS
 # /cmd_vel
@@ -60,7 +61,8 @@ from PySide import QtCore, QtGui
 from ardrone_tutorials.msg import StateData
 from std_msgs.msg import Empty  
 from std_msgs.msg import Bool
-from geometry_msgs.msg import Twist     
+from geometry_msgs.msg import Twist
+from ardrone_autonomy.msg import Navdata
 
 
 ##################
@@ -73,10 +75,6 @@ max_yaw = rospy.get_param('control_yaw', 1.75) # rads/s
 grav = 9.81 # m/s/s
 cmd_rate = rospy.get_param('/cmd_rate', 70); # command rate (Hz)
 COMMAND_PERIOD = 1.0/cmd_rate
-
-#euler_limit = 0.26 #rads
-#vz_limit = 0.7 #m/s
-#yaw_limit = 1.75 #rads/s
 
 # Design Parameters
 tau_x =  0.3
@@ -108,7 +106,7 @@ class KeyMapping(object):
   Emergency        = QtCore.Qt.Key.Key_Space
   StartHover       = QtCore.Qt.Key.Key_I
   EndHover         = QtCore.Qt.Key.Key_K
-  NextWaypoint     = QtCore.Qt.Key.Key_N
+  NextWaypoint     = QtCore.Qt.Key.Key_N # not currently implemented
 
 
 ###################
@@ -162,6 +160,10 @@ class DroneController(DroneVideoDisplay):
     # Holds the current drone status
     self.status = -1
 
+    # Create a keyboard override, so the drone will stop acting autonomously
+    self.keyboard_override = 0
+    self.hover = 0
+
     # Whether or not to request a waypoint from the path node
     self.request_waypoint = Bool(True)
 
@@ -173,6 +175,9 @@ class DroneController(DroneVideoDisplay):
 
     # Subscribe to the current_coordinates topic
     self.sub_cur = rospy.Subscriber('/current_coordinates', StateData, self.updateCurrentState)
+
+    # Subscribe to the navdata topic
+    self.sub_navdata = rospy.Subscriber('/ardrone/navdata', Navdata, self.updateNavdata)
 
     # Publish to topics that control the drone
     self.pubLand    = rospy.Publisher('/ardrone/land', Empty)
@@ -186,23 +191,23 @@ class DroneController(DroneVideoDisplay):
     # Establish a timer to send commands to the drone at a given frequency
     self.commandTimer = rospy.Timer(rospy.Duration(COMMAND_PERIOD), self.SendCommand)
 
-    # Create a keyboard override, so the drone will stop acting autonomously
-    self.keyboard_override = 0
-    self.hover = 0
+    # Establish a timer to request waypoints at a given frequency
+    self.waypointTimer = rospy.Timer(rospy.Duration(COMMAND_PERIOD), self.requestWaypoint)
+
 
   # Sets the current command (used by both keyboard functions and controller)
   # If hover is turned on, will only set the hover command
   def SetCommand(self,roll=0.0,pitch=0.0,yaw_velocity=0.0,z_velocity=0.0):
-#    if self.hover == 0:
+    if self.hover == 0:
       self.command.linear.x = pitch
       self.command.linear.y = roll
       self.command.linear.z = z_velocity
       self.command.angular.z = yaw_velocity
-#    else:
-#      self.command.linear.x = 0.0
-#      self.command.linear.y = 0.0
-#      self.command.linear.z = 0.0
-#      self.command.angular.z = 0.0
+    else:
+      self.command.linear.x = 0.0
+      self.command.linear.y = 0.0
+      self.command.linear.z = 0.0
+      self.command.angular.z = 0.0
 
   # determine commands using the most recent data and send to the drone
   def SendCommand(self,event):
@@ -222,7 +227,7 @@ class DroneController(DroneVideoDisplay):
     self.pubLand.publish(Empty())
 
   # Publish requests for commands
-  def requestWaypoint(self):
+  def requestWaypoint(self,event):
     self.pub_request.publish(self.request_waypoint)
 
   # Make sure value is within specified limits
@@ -232,6 +237,17 @@ class DroneController(DroneVideoDisplay):
     else:
       num = max(min(num,upper),lower)
     return (num)
+
+
+  # This method updates the drone status from navdata
+  def updateNavdata(self,navdata):
+
+    # Update the drone's status
+    self.status = navdata.state
+
+    # Obtain the vertical acceleration from navdata
+    # TODO: this should be obtained from VICON
+    self.az_cur = navdata.az * grav
 
 
   # This method updates the current state of the drone
@@ -248,14 +264,13 @@ class DroneController(DroneVideoDisplay):
 
     self.ax_cur = cur_data.ax
     self.ay_cur = cur_data.ay
-    self.az_cur = cur_data.az
+    #self.az_cur = cur_data.az
+    # TODO: get az from VICON, not Navdata
 
     self.roll_cur = cur_data.roll
     self.pitch_cur = cur_data.pitch
     self.yaw_cur = cur_data.yaw
 
-    # Request the desired state to compare with
-    self.requestWaypoint()
 
   # This method is called to prescribe a path to follow for ARDrone
   def updateDesiredState(self,desiredState):
@@ -280,8 +295,6 @@ class DroneController(DroneVideoDisplay):
     # Determine the commands to be sent to the drone
     self.determineCommands()
 
-    # Set the commands
-    #self.SetCommand(self.roll_out, self.pitch_out, self.yaw_velocity_out, self.z_velocity_out)
 
   # This method calculates the correct output values and sends them to the drone.
   def determineCommands(self):
@@ -325,36 +338,30 @@ class DroneController(DroneVideoDisplay):
 
     # calculate the acceleration in y (global coordinates)
     ay = (2.0 * zeta / tau_y) * (vy_des - vy_cur) + (1.0 / (tau_y * tau_y)) * (y_des - y_cur)
-    
-    # clamp ax and ay for use in arcsin
+
+    # clamp ay for use in arcsin
     ay_clamped = self.clamp(ay / thrust, 1.0)
 
     # calculate the desired roll
     roll_out_global = self.clamp(math.asin(ay_clamped), max_euler)
+
+    # clamp ax for use in arcsin
     ax_clamped = self.clamp(ax / (thrust * math.cos(roll_out_global)),1.0)
 
     # calculate the desired pitch using the desired roll
     pitch_out_global = self.clamp(math.asin(ax_clamped), max_euler)
 
     # make sure yaw angles are a range that makes sense for proportional control
-    #yaw_cur = (yaw_cur + 2.0*math.pi) if (yaw_cur < 0.0) else yaw_cur
-    if yaw_cur < 0.0:
-        yaw_cur = yaw_cur + 2.0*math.pi
-    #yaw_des = (yaw_des + 2.0*math.pi) if (yaw_des < 0.0) else yaw_des
-    if yaw_des < 0.0:
-        yaw_des = yaw_des + 2.0*math.pi
-    #yaw_des = (yaw_des + 2.0*math.pi) if ((yaw_cur - yaw_des) > math.pi) else yaw_des
-    if (yaw_cur - yaw_des) > math.pi:
-        yaw_des = yaw_des + 2.0*math.pi
-    #yaw_des = (yaw_des - 2.0*math.pi) if ((yaw_des - yaw_cur) > math.pi) else yaw_des
-    if (yaw_des - yaw_cur) > math.pi:
-        yaw_des = yaw_des - 2.0*math.pi
+    yaw_cur = (yaw_cur + 2.0*math.pi) if (yaw_cur < 0.0) else yaw_cur
+    yaw_des = (yaw_des + 2.0*math.pi) if (yaw_des < 0.0) else yaw_des
+    yaw_des = (yaw_des + 2.0*math.pi) if ((yaw_cur - yaw_des) > math.pi) else yaw_des
+    yaw_des = (yaw_des - 2.0*math.pi) if ((yaw_des - yaw_cur) > math.pi) else yaw_des
 
     # calculate the desired yaw velocity and convert to a percentage of maximum yaw rate
     self.yaw_velocity_out = self.clamp((1.0 / tau_w) * (yaw_des - yaw_cur), max_yaw)
 
-    # transform roll, pitch, and yaw to local (drone) coordinates). Small roll and pitch, so z not effected significantly
-    # This is because the original calculations are always assuming that the drone is facing along the coordinate axes, but this isn't necessarily the case. Therefore, calculate pitch and roll as if it was, and then transform them based on the yaw of the vehicle. Note that if yaw is zero, then the pitch and roll are unchanged.
+    # Transform roll, pitch, and yaw to local (drone) coordinates.
+    # Assume z not affected significantly due to small roll and pitch angles.
     self.pitch_out = pitch_out_global * math.cos(yaw_cur) + roll_out_global * math.sin(yaw_cur)
     self.roll_out = roll_out_global * math.cos(yaw_cur) - pitch_out_global * math.sin(yaw_cur)
 
@@ -386,8 +393,8 @@ class DroneController(DroneVideoDisplay):
         self.hover = 1
       elif key == KeyMapping.EndHover:
         self.hover = 0
-      elif key == KeyMapping.NextWaypoint:
-        self.requestWaypoint() 
+      #elif key == KeyMapping.NextWaypoint:
+        #self.requestWaypoint() 
       else:
         # Now we handle moving, notice that this section is the opposite (+=) of the keyrelease section
         if key == KeyMapping.YawLeft:
