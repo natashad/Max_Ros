@@ -42,7 +42,7 @@ from std_msgs.msg import Bool
 from std_msgs.msg import Float64
 
 # Pair is used to send time and signature from WaveDNA
-from terpsichore.msg import pair
+from terpischore.msg import pair
 
 
 ##################
@@ -58,12 +58,12 @@ scale = 0.333
 
 class Conductor(object):
     def __init__(self):
-        super(Conductor,self).__init__()
-        print "hello"
+        super(CreateTrajectory,self).__init__()
+
         # Initialize state variables for the drone
         self.x = 0.0
         self.y = 0.0
-        self.z = 1.0
+        self.z = 0.0
 
         self.vx = 0.0
         self.vy = 0.0
@@ -121,7 +121,7 @@ class Conductor(object):
         t = cond.t
 
         # Determine state for 4/4 time
-        if cond.data[0] == 4.0: # or the tempo is too fast
+        if cond.data(0) == 4: # or the tempo is too fast
 
             # Determine z
             A = 0.35
@@ -146,8 +146,8 @@ class Conductor(object):
                 self.vz = 48.0*(C-D)*math.pow(t-3.0,2)-24.0*(C-D)*(t-3.0)
                 self.az = 96.0*(C-D)*(t-3.0) - 24.0*(C-D)
             else:
-                self.z = 16.0*D*math.pow(t-3.5,3)-12.0*D*math.pow(t-3.5,2)+D
-                self.vz = 48.0*D*math.pow(t-3.5,2)-24.0*D*(t-3.5)
+                self.z = 16.0*D*math.pow(t-3.5,3)-12.0*D*pow(t-3.5,2)+D
+                self.vz = 48.0*D*math.pw(t-3.5,2)-24.0*D*(t-3.5)
                 self.az = 96.0*D*(t-3.5) - 24.0*D
 
             # Determine y
@@ -176,7 +176,7 @@ class Conductor(object):
                 self.ay = 0.0
  
         # Determine state for 3/4 time
-        if cond.data[0] == 3.0:
+        if cond.data(0) == 3:
 
             # Determine z
             A = 0.25
@@ -227,18 +227,18 @@ class Conductor(object):
                 self.ay = 0.0
 
         # Determine state for 2/4 time
-        if cond.data[0] == 2.0:
+        if cond.data(0) == 2:
 
             # Determine z
             A = 0.4
             B = 1.0
 
             if t < 1.0:
-                self.z = (A/2.0)*(1.0 - math.cos(2.0*math.pi*t))
+                self.z = (A/2.0)*(1.0 - cos(2.0*math.pi*t))
                 self.vz = A*math.pi*math.sin(2.0*math.pi*t)
                 self.az = 2.0*A*math.pi*math.pi*math.cos(2.0*math.pi*t)
             else:
-                self.z = (B/2.0)*(1.0 - math.cos(2.0*math.pi*t))
+                self.z = (B/2.0)*(1.0 - cos(2.0*math.pi*t))
                 self.vz = B*math.pi*math.sin(2.0*math.pi*t)
                 self.az = 2.0*B*math.pi*math.pi*math.cos(2.0*math.pi*t)
 
@@ -246,7 +246,7 @@ class Conductor(object):
             R = 0.4
 
             if t < 1.5:
-                self.y = (R/2.0)*(1.0 - math.cos((4.0/3.0)*math.pi*t))
+                self.y = (R/2.0)*(1.0 - cos((4.0/3.0)*math.pi*t))
                 self.vy = (2.0/3.0)*R*math.pi*math.sin((4.0/3.0)*math.pi*t)
                 self.ay = (8.0/9.0)*R*math.pi*math.pi*math.cos((4.0/3.0)*math.pi*t)
             else:
@@ -266,7 +266,7 @@ class Conductor(object):
         self.y = self.y * scale
         self.vy = self.vy * scale
         self.ay = self.ay * scale
-        self.z = self.z * scale + 1.0
+        self.z = self.z * scale
         self.vz = self.vz * scale
         self.az = self.az * scale
 

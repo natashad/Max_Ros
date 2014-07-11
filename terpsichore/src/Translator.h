@@ -11,8 +11,8 @@ class Conductor {
 	//reference position and its derivatives
 	public:
 	double x, y, z;
-	double x_dot, y_dot, z_dot;
-	double x_ddot, y_ddot, z_ddot;
+	double vx, vy, vz;
+	double ax, ay, az;
 	
 	
 	Conductor(){};

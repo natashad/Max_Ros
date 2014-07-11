@@ -71,3 +71,6 @@ CMakeFiles/osc_test.dir/src/main.cpp.o
  /opt/ros/hydro/include/ros/wall_timer_options.h
  /opt/ros/hydro/include/rosconsole/macros_generated.h
  /opt/ros/hydro/include/std_msgs/Float64.h
+ /opt/ros/hydro/include/std_msgs/Float64MultiArray.h
+ /opt/ros/hydro/include/std_msgs/MultiArrayDimension.h
+ /opt/ros/hydro/include/std_msgs/MultiArrayLayout.h
