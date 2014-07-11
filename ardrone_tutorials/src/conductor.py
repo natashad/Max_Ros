@@ -49,7 +49,7 @@ from terpischore.msg import pair
 # SET PARAMETERS #
 ##################
 
-scale = 1.0
+scale = 0.333
 
 
 #########################
@@ -186,14 +186,24 @@ class Conductor(object):
 
             if t < 1.0:
                 self.z = (A/2.0)*(1.0 - math.cos(2.0*math.pi*t))
+                self.vz = A*math.pi*math.sin(2.0*math.pi*t)
+                self.az = 2.0*A*math.pi*math.pi*math.cos(2.0*math.pi*t)
             elif t < 1.5:
                 self.z = -16.0*B*math.pow(t-1.0,3)+12.0*B*math.pow(t-1.0,2)
+                self.vz = -48.0*B*math.pow(t-1.0,2)+24.0*B*(t-1.0)
+                self.az = -96.0*B*(t-1.0)+24.0*B
             elif t < 2.0:
                 self.z = 16.0*(B-C)*math.pow(t-1.5,3)-12.0*(B-C)*math.pow(t-1.5,2)+B
+                self.vz = 48.0*(B-C)*math.pow(t-1.5,2)-24.0*(B-C)*(t-1.5)
+                self.az = 96.0*(B-C)*(t-1.5)-24.0*(C-D)
             elif t < 2.5:
                 self.z = 16.0*(C-D)*math.pow(t-2.0,3)-12.0*(C-D)*math.pow(t-2.0,2)+C
+                self.vz = 48.0*(C-D)*math.pow(t-2.0,2)-24.0*(C-D)*(t-2.0)
+                self.az = 96.0*(C-D)*(t-2.0)-24.0*(C-D)
             elif t < 3.0:
                 self.z = 16.0*D*math.pow(t-2.5,3)-12.0*D*math.pow(t-2.5,2)+D
+                self.vz = 48.0*D*math.pow(t-2.5,2)-24.0*D*(t-2.5)
+                self.az = 96.0*D*(t-2.5)-24.0*D
 
             # Determine y
             L = -0.3
@@ -201,12 +211,20 @@ class Conductor(object):
 
             if t < 0.5:
                 self.y = -16.0*L*math.pow(t,3)+12.0*L*math.pow(t,2)
+                self.vy = -48.0*L*math.pow(t,2)+23.0*L*t
+                self.ay = -96.0*L*t+24.0*L
             elif t < 1.5:
                 self.y = 2.0*(L-R)*math.pow(t-0.5,3)-3.0*(L-R)*math.pow(t-0.5,2)+L
+                self.vy = 6.0*(L-R)*math.pow(t-0.5,2)-6.0*(L-R)*(t-0.5)
+                self.ay = 12.0*(L-R)*(t-0.5)-6.0*(L-R)
             elif t < 2.5:
                 self.y = 2.0*R*math.pow(t-1.5,3)-3.0*R*math.pow(t-1.5,2)+R
+                self.vy = 6.0*R*math.pow(t-1.5,2)-6.0*R*(t-1.5)
+                self.ay = 12.0*R*(t-1.5)-6.0*R
             else:
                 self.y = 0.0
+                self.vy = 0.0
+                self.ay = 0.0
 
         # Determine state for 2/4 time
         if cond.data(0) == 2:
@@ -240,6 +258,18 @@ class Conductor(object):
         self.x = 0.0
         self.vx = 0.0
         self.ax = 0.0
+
+        # scale to make feasible
+        self.x = self.x * scale
+        self.vx = self.vx * scale
+        self.ax = self.ax * scale
+        self.y = self.y * scale
+        self.vy = self.vy * scale
+        self.ay = self.ay * scale
+        self.z = self.z * scale
+        self.vz = self.vz * scale
+        self.az = self.az * scale
+
 
 
 # Setup the ROS node
