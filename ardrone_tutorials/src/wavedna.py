@@ -110,7 +110,7 @@ class CreateTrajectory(object):
         self.clean_buffers()
 
         # Add new data to the buffers
-        for i in range(0,len(new_wavedna.beats)-1):
+        for i in range(0,len(new_wavedna.beats)):
             self.time_buffer.append(new_wavedna.beats[i].t)
             self.point_buffer.append(new_wavedna.beats[i].data[0])
     
