@@ -3,6 +3,7 @@
 #include <oscpack/ip/UdpSocket.h>
 #include <oscpack/osc/OscOutboundPacketStream.h>
 #include <std_msgs/Float64.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <terpsichore/bardata.h>
 #include <ros/ros.h>
 #include <thread>
@@ -37,7 +38,9 @@ LRPacketListener* listener;
 UdpListeningReceiveSocket* receive_socket;
 Conductor conductor;
 
+ros::Publisher time_pub;
 ros::Publisher data_pub;
+ros::Publisher conductor_pub;
 ros::Time last_update_time;
 ros::Time playback_start_time;
 Transport last_transport;
@@ -48,7 +51,7 @@ terpsichore::bardata bardata;
 
 void sync(Transport tr){
     //std::cout << tr.toString() << std::endl;
-    transport_string = tr.toString();
+    transport_string = tr.toString()	;
     if(playing){
     	Transport diff = tr - last_transport;
     	t = diff.toSec();
@@ -199,6 +202,19 @@ void listen(){
 void update_baton(Transport tr){
 	conductor.calculatePosition(tr);
 	baton.setPosition(300 + 200*conductor.y, 400 - 200*conductor.z);
+	std::vector<std_msgs::Float64> dat;
+	
+	Position p = tr.position;
+	TimeSignature ts = tr.timeSignature;
+	//double tempo = (double)tr.tempo;
+	double t = (double)(p.beat - 1) + (double)p.unit/(double)p.resolution;
+	
+	terpsichore::pair b;
+	std::vector<double> d;
+	b.t = t;
+	d.push_back((double)ts.beatsPerBar);
+	b.data = d;
+	conductor_pub.publish(b);
 }
 
 void ros_stuff(){
@@ -211,8 +227,10 @@ void ros_stuff(){
     ros::Rate loop_rate(200);
     std::string timing_channel = n.resolveName("/terpsichore/ableton_time");
     std::string music_data_channel = n.resolveName("/terpsichore/music_data");
-    ros::Publisher time_pub = n.advertise<std_msgs::Float64>(timing_channel,50);
+    std::string conductor_channel = n.resolveName("/terpsichore/conductor_time");
+    time_pub = n.advertise<std_msgs::Float64>(timing_channel,50);
     data_pub = n.advertise<terpsichore::bardata>(music_data_channel,50);
+    conductor_pub = n.advertise<terpsichore::pair>(conductor_channel,50);
     std::cout << "ros thread is working\n";	
     
     while(!quit){
@@ -278,6 +296,7 @@ int main(int argc, char* argv[])
 	stop_shape.setPosition(700, 10);
 	stop_shape.setFillColor(sf::Color::Red);
 	baton.setFillColor(sf::Color::Red);
+	baton.setPosition(400, 300);
 
 	// select the font
 	transport_text.setFont(font); // font is a sf::Font
@@ -359,7 +378,6 @@ int main(int argc, char* argv[])
         
         // window.draw(...);
         transport_text.setString(transport_string);
-        window.draw(transport_text);
         time_text.setString(time_string);
         window.draw(time_text);
         offset_text.setString(offset_string);
@@ -374,6 +392,7 @@ int main(int argc, char* argv[])
         //draw the baton point;
         window.draw(baton);
 
+        window.draw(transport_text);
         // end the current frame
         window.display();
     }

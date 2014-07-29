@@ -70,4 +70,7 @@ CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/ros/wall_timer.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/ros/wall_timer_options.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/rosconsole/macros_generated.h
 CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/std_msgs/Float64.h
+CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/std_msgs/Float64MultiArray.h
+CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/std_msgs/MultiArrayDimension.h
+CMakeFiles/osc_test.dir/src/main.cpp.o: /opt/ros/hydro/include/std_msgs/MultiArrayLayout.h
 

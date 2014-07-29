@@ -12,7 +12,7 @@
     <param name="ARDroneShare/ARDroneShare/zero_pose/position/z"    value="0" type="double" />
   </node>
   <node name="vicon_coordinates" pkg="ardrone_tutorials" type="vicon.py" output="screen" required="True"/>
-  <!-- <node name="terpsichore" pkg="terpsichore" type="osc_test" output="screen" required="True"/> -->
+  <!--<node name="terpsichore" pkg="terpsichore" type="osc_test" output="screen" required="True"/> -->
   <node name="wavedna" pkg="ardrone_tutorials" type="wavedna.py" output="screen" required="True"/>
   <node name="dsl_controller" pkg="ardrone_tutorials" type="dsl_controller.py" output="screen" required="True"/>
 </launch>
