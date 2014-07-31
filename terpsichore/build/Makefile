@@ -241,17 +241,30 @@ doxygen/fast:
 .PHONY : doxygen/fast
 
 #=============================================================================
-# Target rules for targets named osc_test
+# Target rules for targets named interpreter
 
 # Build rule for target.
-osc_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 osc_test
-.PHONY : osc_test
+interpreter: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 interpreter
+.PHONY : interpreter
 
 # fast build rule for target.
-osc_test/fast:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/build
-.PHONY : osc_test/fast
+interpreter/fast:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/build
+.PHONY : interpreter/fast
+
+#=============================================================================
+# Target rules for targets named osc_relay
+
+# Build rule for target.
+osc_relay: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 osc_relay
+.PHONY : osc_relay
+
+# fast build rule for target.
+osc_relay/fast:
+	$(MAKE) -f CMakeFiles/osc_relay.dir/build.make CMakeFiles/osc_relay.dir/build
+.PHONY : osc_relay/fast
 
 #=============================================================================
 # Target rules for targets named rosbuild_clean-test-results
@@ -448,36 +461,84 @@ gtest_main/fast:
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
-src/LRReceiver.o: src/LRReceiver.cpp.o
-.PHONY : src/LRReceiver.o
+src/ConductorNode.o: src/ConductorNode.cpp.o
+.PHONY : src/ConductorNode.o
 
 # target to build an object file
-src/LRReceiver.cpp.o:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/LRReceiver.cpp.o
-.PHONY : src/LRReceiver.cpp.o
+src/ConductorNode.cpp.o:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/ConductorNode.cpp.o
+.PHONY : src/ConductorNode.cpp.o
 
-src/LRReceiver.i: src/LRReceiver.cpp.i
-.PHONY : src/LRReceiver.i
+src/ConductorNode.i: src/ConductorNode.cpp.i
+.PHONY : src/ConductorNode.i
 
 # target to preprocess a source file
-src/LRReceiver.cpp.i:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/LRReceiver.cpp.i
-.PHONY : src/LRReceiver.cpp.i
+src/ConductorNode.cpp.i:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/ConductorNode.cpp.i
+.PHONY : src/ConductorNode.cpp.i
 
-src/LRReceiver.s: src/LRReceiver.cpp.s
-.PHONY : src/LRReceiver.s
+src/ConductorNode.s: src/ConductorNode.cpp.s
+.PHONY : src/ConductorNode.s
 
 # target to generate assembly for a file
-src/LRReceiver.cpp.s:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/LRReceiver.cpp.s
-.PHONY : src/LRReceiver.cpp.s
+src/ConductorNode.cpp.s:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/ConductorNode.cpp.s
+.PHONY : src/ConductorNode.cpp.s
+
+src/LiveReceiver.o: src/LiveReceiver.cpp.o
+.PHONY : src/LiveReceiver.o
+
+# target to build an object file
+src/LiveReceiver.cpp.o:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/LiveReceiver.cpp.o
+.PHONY : src/LiveReceiver.cpp.o
+
+src/LiveReceiver.i: src/LiveReceiver.cpp.i
+.PHONY : src/LiveReceiver.i
+
+# target to preprocess a source file
+src/LiveReceiver.cpp.i:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/LiveReceiver.cpp.i
+.PHONY : src/LiveReceiver.cpp.i
+
+src/LiveReceiver.s: src/LiveReceiver.cpp.s
+.PHONY : src/LiveReceiver.s
+
+# target to generate assembly for a file
+src/LiveReceiver.cpp.s:
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/LiveReceiver.cpp.s
+.PHONY : src/LiveReceiver.cpp.s
+
+src/Relay.o: src/Relay.cpp.o
+.PHONY : src/Relay.o
+
+# target to build an object file
+src/Relay.cpp.o:
+	$(MAKE) -f CMakeFiles/osc_relay.dir/build.make CMakeFiles/osc_relay.dir/src/Relay.cpp.o
+.PHONY : src/Relay.cpp.o
+
+src/Relay.i: src/Relay.cpp.i
+.PHONY : src/Relay.i
+
+# target to preprocess a source file
+src/Relay.cpp.i:
+	$(MAKE) -f CMakeFiles/osc_relay.dir/build.make CMakeFiles/osc_relay.dir/src/Relay.cpp.i
+.PHONY : src/Relay.cpp.i
+
+src/Relay.s: src/Relay.cpp.s
+.PHONY : src/Relay.s
+
+# target to generate assembly for a file
+src/Relay.cpp.s:
+	$(MAKE) -f CMakeFiles/osc_relay.dir/build.make CMakeFiles/osc_relay.dir/src/Relay.cpp.s
+.PHONY : src/Relay.cpp.s
 
 src/Translator.o: src/Translator.cpp.o
 .PHONY : src/Translator.o
 
 # target to build an object file
 src/Translator.cpp.o:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.o
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/Translator.cpp.o
 .PHONY : src/Translator.cpp.o
 
 src/Translator.i: src/Translator.cpp.i
@@ -485,7 +546,7 @@ src/Translator.i: src/Translator.cpp.i
 
 # target to preprocess a source file
 src/Translator.cpp.i:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.i
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/Translator.cpp.i
 .PHONY : src/Translator.cpp.i
 
 src/Translator.s: src/Translator.cpp.s
@@ -493,32 +554,8 @@ src/Translator.s: src/Translator.cpp.s
 
 # target to generate assembly for a file
 src/Translator.cpp.s:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/Translator.cpp.s
+	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/Translator.cpp.s
 .PHONY : src/Translator.cpp.s
-
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/osc_test.dir/build.make CMakeFiles/osc_test.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -538,8 +575,9 @@ help:
 	@echo "... install"
 	@echo "... install/local"
 	@echo "... install/strip"
+	@echo "... interpreter"
 	@echo "... list_install_components"
-	@echo "... osc_test"
+	@echo "... osc_relay"
 	@echo "... rebuild_cache"
 	@echo "... rosbuild_clean-test-results"
 	@echo "... rosbuild_precompile"
@@ -556,15 +594,18 @@ help:
 	@echo "... tests"
 	@echo "... gtest"
 	@echo "... gtest_main"
-	@echo "... src/LRReceiver.o"
-	@echo "... src/LRReceiver.i"
-	@echo "... src/LRReceiver.s"
+	@echo "... src/ConductorNode.o"
+	@echo "... src/ConductorNode.i"
+	@echo "... src/ConductorNode.s"
+	@echo "... src/LiveReceiver.o"
+	@echo "... src/LiveReceiver.i"
+	@echo "... src/LiveReceiver.s"
+	@echo "... src/Relay.o"
+	@echo "... src/Relay.i"
+	@echo "... src/Relay.s"
 	@echo "... src/Translator.o"
 	@echo "... src/Translator.i"
 	@echo "... src/Translator.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
 .PHONY : help
 
 

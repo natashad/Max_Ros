@@ -1,0 +1,23 @@
+<package>
+  <description brief="mephisto">
+
+     mephisto
+
+  </description>
+  <author>wavy</author>
+  <license>GPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/mephisto</url>
+  <depend package="ardrone_autonomy"/>
+  <depend package="cv_bridge"/>
+  <depend package="dynamic_reconfigure"/>
+  <depend package="sensor_msgs"/>
+  <depend package="std_srvs"/>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+  <rosdep name="libblas-dev"/>
+  <rosdep name="liblapack-dev"/>
+  <export><cpp cflags="-I${prefix}/srv/cpp -I${prefix}/msg/cpp"/></export>0
+</package>
+
+

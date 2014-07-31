@@ -24,15 +24,15 @@ rosbuild_genmsg()
 #rosbuild_gensrv()
 
 
-# --------------------------- OSC receiver --------------------------------
+# ------------------------------- Conductor ------------------------------------
 # set header ans source files
-set(OSC_RECEIVER_SOURCE_FILES
-    src/main.cpp       
-    src/LRReceiver.cpp
+set(CONDUCTOR_SOURCE_FILES
+    src/ConductorNode.cpp       
+    src/LiveReceiver.cpp
     src/Translator.cpp
 )
-set(OSC_RECEIVER_HEADER_FILES    
-    src/LRReceiver.h
+set(CONDUCTOR_HEADER_FILES    
+    src/LiveReceiver.h
     src/Translator.h
 )
 
@@ -45,8 +45,30 @@ link_directories(
 set(OSC_LIBRARIES oscpack)
 
 # build!
-rosbuild_add_executable(osc_test ${OSC_RECEIVER_SOURCE_FILES} ${OSC_RECEIVER_HEADER_FILES})
+rosbuild_add_executable(interpreter ${CONDUCTOR_SOURCE_FILES} ${CONDUCTOR_HEADER_FILES})
 set(SFML_LIBRARIES sfml-graphics sfml-window sfml-system sfml-audio)
-target_link_libraries(osc_test ${OSC_LIBRARIES} ${SFML_LIBRARIES} m)
+target_link_libraries(interpreter ${OSC_LIBRARIES} ${SFML_LIBRARIES} m)
+add_definitions(-std=c++0x)
+#add_dependencies(drone_stateestimation thirdparty ${PROJECT_NAME}_gencpp ${PROJECT_NAME}_gencfg)
+
+# ------------------------------- OSC relay ------------------------------------
+# set header ans source files
+set(OSC_RELAY_SOURCE_FILES
+    src/Relay.cpp
+)
+set(OSC_RELAY_HEADER_FILES
+)
+
+# set required libs and headers
+include_directories(
+)  
+
+link_directories(
+)
+set(OSC_LIBRARIES oscpack)
+
+# build!
+rosbuild_add_executable(osc_relay ${OSC_RELAY_SOURCE_FILES} ${OSC_RELAY_HEADER_FILES})
+target_link_libraries(osc_relay ${OSC_LIBRARIES} m)
 add_definitions(-std=c++0x)
 #add_dependencies(drone_stateestimation thirdparty ${PROJECT_NAME}_gencpp ${PROJECT_NAME}_gencfg)

@@ -1,7 +1,7 @@
 #ifndef __TERPSICHORE_TRANSLATOR__
 #define __TERPSICHORE_TRANSLATOR__
 
-#include "LRReceiver.h"
+#include "LiveReceiver.h"
 
 /**
  * Purpose: take the beat and note information and generate a path

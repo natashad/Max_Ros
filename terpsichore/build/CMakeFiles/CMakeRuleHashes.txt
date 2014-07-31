@@ -3,7 +3,6 @@
 63cc23da967f1b35ee97bc033a24100c ../msg_gen/cpp/include/terpsichore/pair.h
 f5d1cf67f8f5d9805c602e31f38ba441 ../msg_gen/lisp/bardata.lisp
 6befa5a94888a1e148adfc6c49309d81 ../msg_gen/lisp/pair.lisp
-d7dfe0ce74ba78c23616d5f0b6fc10b4 ../src/terpsichore/msg/_Pair.py
 d490f43af1a20b295df6126e22dbc0f7 ../src/terpsichore/msg/__init__.py
 f53d43af89e87cb9f5b33cdda48e59ed ../src/terpsichore/msg/_bardata.py
 0ff6a11d090551ff06d3fdd6ddd80f65 ../src/terpsichore/msg/_pair.py
