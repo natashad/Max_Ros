@@ -46,8 +46,6 @@ import math
 
 # Load the DroneVideoDisplay class, which handles video display
 from drone_video_display import DroneVideoDisplay
-
-# An enumeration of Drone Statuses
 from drone_status import DroneStatus
 
 # The GUI libraries
@@ -64,7 +62,6 @@ from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist
 from ardrone_autonomy.msg import Navdata
 
-
 ##################
 # SET PARAMETERS #
 ##################
@@ -77,11 +74,11 @@ cmd_rate = rospy.get_param('/cmd_rate', 70); # command rate (Hz)
 COMMAND_PERIOD = 1.0/cmd_rate
 
 # Design Parameters
-tau_x =  0.3
-tau_y =  0.3
-tau_z =  0.3
+tau_x =  0.6
+tau_y =  0.6
+tau_z =  0.6
 tau_w = 1.5
-zeta = 0.8
+zeta = 0.707
 
 
 ####################
@@ -211,7 +208,7 @@ class DroneController(DroneVideoDisplay):
 
   # determine commands using the most recent data and send to the drone
   def SendCommand(self,event):
-    # and (self.status == DroneStatus.Flying or self.status == DroneStatus.GotoHover or self.status == DroneStatus.Hovering):
+    if (self.status == DroneStatus.Flying or self.status == DroneStatus.GotoHover or self.status == DroneStatus.Hovering):
       self.pubCommand.publish(self.command)
 
   # Send an emergency (or reset) message to the ardrone driver
@@ -247,7 +244,7 @@ class DroneController(DroneVideoDisplay):
 
     # Obtain the vertical acceleration from navdata
     # TODO: this should be obtained from VICON
-    self.az_cur = navdata.az * grav
+    self.az_cur = (navdata.az - 1.0) * grav
 
 
   # This method updates the current state of the drone
@@ -266,6 +263,7 @@ class DroneController(DroneVideoDisplay):
     self.ay_cur = cur_data.ay
     #self.az_cur = cur_data.az
     # TODO: get az from VICON, not Navdata
+    # az may need some filter or more points to numerically differentiate over
 
     self.roll_cur = cur_data.roll
     self.pitch_cur = cur_data.pitch
@@ -340,13 +338,19 @@ class DroneController(DroneVideoDisplay):
     ay = (2.0 * zeta / tau_y) * (vy_des - vy_cur) + (1.0 / (tau_y * tau_y)) * (y_des - y_cur)
 
     # clamp ay for use in arcsin
-    ay_clamped = self.clamp(ay / thrust, 1.0)
+    if thrust == 0.0:
+        ay_clamped = 1.0
+    else:
+        ay_clamped = self.clamp(ay / thrust, 1.0)
 
     # calculate the desired roll
     roll_out_global = self.clamp(math.asin(ay_clamped), max_euler)
 
     # clamp ax for use in arcsin
-    ax_clamped = self.clamp(ax / (thrust * math.cos(roll_out_global)),1.0)
+    if thrust == 0.0:
+        ax_clamped = 1.0
+    else:
+        ax_clamped = self.clamp(ax / (thrust * math.cos(roll_out_global)),1.0)
 
     # calculate the desired pitch using the desired roll
     pitch_out_global = self.clamp(math.asin(ax_clamped), max_euler)
