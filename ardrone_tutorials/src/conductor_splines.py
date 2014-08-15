@@ -20,7 +20,7 @@
 ####################
 
 # Import ROS libraries, rospy, and load manifest file for access to project dependencies
-import roslib; roslib.load_manifest('ardrone_tutorials')
+import roslib; roslib.load_manifest('dsl__wavedna')
 import rospy
 
 # Import math for trigonometric functions
@@ -35,14 +35,14 @@ from time import time
 ###################
 
 # StateData is used to send desired coordinates to the drone
-from ardrone_tutorials.msg import StateData
+from dsl__msg.msg import StateData
 
 # Bool is used for waypoint requests and Float64 for time
 from std_msgs.msg import Bool
 from std_msgs.msg import Float64
 
 # Pair is used to send time and signature from WaveDNA
-from terpsichore.msg import pair
+from dsl__msg.msg import pair
 
 
 ##################
@@ -131,12 +131,12 @@ class Conductor(object):
 
         # Coefficients for 4/4 Time Horizontal Position
         coeffh44 = []
-        coeffh44.append([0.0, 0.3508399169, -0.9874354891, -0.1634044278, 0.0])
-        coeffh44.append([1.0, 4.212854098, 0.0650842616, -1.0857556553, -0.8])
-        coeffh44.append([1.5, -8.5246075364, 6.3843654086, 2.1389691798, -0.8])
-        coeffh44.append([2.0, 4.2855760476, -6.402545896, 2.1298789361, 0.8])
-        coeffh44.append([2.5, 0.2502580198, 0.0258181754, -1.0584849242, 0.8])
-        coeffh44.append([3.5, -1.5463720618, 0.8516696407, -0.0932483264, 0.0])
+        coeffh44.append([0.0, 0.351381903892195, -0.987851793292893, -0.163530110599302, 0.0])
+        coeffh44.append([1.0, 4.20776410526663, 0.0662939183836926, -1.0850879855085, -0.8])
+        coeffh44.append([1.5, -8.50399619986791, 6.37794007628363, 2.13702901182516, -0.8])
+        coeffh44.append([2.0, 4.208220694205, -6.37805422351823, 2.13697193820786, 0.8])
+        coeffh44.append([2.5, 0.350639946867334, -0.0657231822107219, -1.08491676465661, 0.8])
+        coeffh44.append([3.5, -1.31462016287835, 0.986196658391281, -0.164443288476054, 0.0])
 
         # Coefficients for 3/4 Time Horizontal Position
         coeffh34 = []
@@ -162,7 +162,7 @@ class Conductor(object):
         self.sub_request = rospy.Subscriber('/waypoint_request', Bool, self.process_request)
 
         # Subscribe to the WaveDNA data
-        self.sub_wavedna = rospy.Subscriber('/terpsichore/conductor_time', pair, self.determine_state)
+        self.sub_wavedna = rospy.Subscriber('/conductor_time', pair, self.determine_state)
 
         # Publish to the desired_coordinates topic
         self.pub_desired = rospy.Publisher('/path_coordinates', StateData)
