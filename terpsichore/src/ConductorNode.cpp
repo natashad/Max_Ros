@@ -14,10 +14,8 @@
 #include <SFML/Graphics.hpp>
 #include <X11/Xlib.h>
  
-#define PORT 7340
 #define OUTPUT_BUFFER_SIZE 1024
 char buffer[OUTPUT_BUFFER_SIZE];
-
 bool playing = false;
 bool quit = false;
 	
@@ -34,6 +32,7 @@ sf::Text debug_text;
 std::vector<sf::CircleShape> baton_trail(50);
 
 std::string ADDRESS;
+int PORT = 7800;
 LRPacketListener* listener;
 UdpListeningReceiveSocket* receive_socket;
 Conductor conductor;
@@ -260,9 +259,18 @@ int main(int argc, char* argv[])
     if(argc < 2){
         ADDRESS = "localhost";
     }else{
-    	ADDRESS = argv[1];
+    	std::string line = argv[1];
+    	
+    	int colon_pos = line.find(":");
+    	if(colon_pos != std::string::npos){
+    		ADDRESS = line.substr(0, colon_pos);
+    		PORT = std::stoi(line.substr(colon_pos + 1, std::string::npos));
+    	}else{
+    		ADDRESS = line;
+    	}
     }
     std::cout << ADDRESS << std::endl;
+    std::cout << PORT << std::endl;
     
     //start ros thread
     XInitThreads();
