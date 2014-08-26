@@ -4,8 +4,8 @@
 #include <std_msgs/Float64MultiArray.h>
 #include <string>
 
-#define PORT 7340
 #define OUTPUT_BUFFER_SIZE 64
+int port = 7800;
 char buffer[OUTPUT_BUFFER_SIZE];
 UdpTransmitSocket* transmit_socket;
 
@@ -30,11 +30,20 @@ int main(int argc, char* argv[]){
     if(argc < 2){
         address = "localhost";
     }else{
-    	address = argv[1];
+    	std::string line = argv[1];
+    	
+    	int colon_pos = line.find(":");
+    	if(colon_pos != std::string::npos){
+    		address = line.substr(0, colon_pos);
+    		port = std::stoi(line.substr(colon_pos + 1, std::string::npos));
+    	}else{
+    		address = line;
+    	}
     }
     std::cout << address << std::endl;
+  	std::cout << port << std::endl;
     
-    transmit_socket = new UdpTransmitSocket( IpEndpointName( address.c_str() , PORT ) );
+    transmit_socket = new UdpTransmitSocket( IpEndpointName( address.c_str() , port ) );
     ros::init(argc, argv, "osc_relay");
     ros::NodeHandle n;
     ros::Subscriber sub = n.subscribe("to_ableton", 100, callback);

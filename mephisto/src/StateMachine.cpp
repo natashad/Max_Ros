@@ -52,8 +52,8 @@ ForceType getForceType(Twist force){
 	//Next look at changes in linear acceleration in x and y
 	//If these numbers are big then it's fairly safe to say the interaction
 	//was a push from one of the sides
-	else if(abs(force.linear.x) > LIN_THRESHOLD / FACTOR ||
-			abs(force.linear.y) > LIN_THRESHOLD / FACTOR){
+	else if((abs(force.linear.x) > LIN_THRESHOLD / FACTOR ||
+			abs(force.linear.y) > LIN_THRESHOLD / FACTOR)){
 		if(abs(force.linear.x) > LIN_THRESHOLD / FACTOR){
 			//front/back
 			if(force.linear.x < 0.0){
@@ -73,8 +73,8 @@ ForceType getForceType(Twist force){
 	//Then we look at rotations about the x and y axis. Large numbers in these
 	//guys result from a tilt. In addition, look at acceleration in the z 
 	//direction to determine whether it was a tilt up or down
-	else if(abs(force.angular.x) > ROT_THRESHOLD / FACTOR ||
-			abs(force.angular.y) > ROT_THRESHOLD / FACTOR){
+	else if((abs(force.angular.x) > ROT_THRESHOLD / FACTOR ||
+			abs(force.angular.y) > ROT_THRESHOLD / FACTOR) && (abs(force.linear.z) < LIN_THRESHOLD / FACTOR)){
 		if(force.linear.z > 0.0){
 			//tilt up
 			if(abs(force.angular.x) > abs(force.angular.y)){

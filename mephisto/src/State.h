@@ -20,12 +20,12 @@ using namespace ardrone_autonomy;
 // Constants
 //==============================================================================
 
-static const double LIN_THRESHOLD = 0.2;
-static const double ROT_THRESHOLD = 500.0;
-static const double YAW_THRESHOLD = 500.0;
+static const double LIN_THRESHOLD = 0.38;
+static const double ROT_THRESHOLD = 1300.0;
+static const double YAW_THRESHOLD = 1300.0;
 
-static const double LIN_STABLE = 0.075;
-static const double ROT_STABLE = 200.0;
+static const double LIN_STABLE = 0.2;
+static const double ROT_STABLE = 900.0;
 
 static const double DURATION_STABLE = 2.0;
 static const double DOUBLE_TAP_TIME = 3.0;

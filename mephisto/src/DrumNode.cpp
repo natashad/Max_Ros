@@ -14,19 +14,7 @@ int main(int argc, char* argv[]){
 	ros::Rate r(Global::rate);
 	
 	Messenger* messenger = new Messenger();
-	DrumMachine* dm;
-	if(argc > 1){
-		if(atoi(argv[1]) == 1){
-			dm = new DrumMachine(messenger);
-			std::cout << "CAUTION: allowing takeoff" << std::endl;
-		}else{
-			dm = new DrumMachine(messenger);
-			std::cout << "not allowing takeoff" << std::endl;
-		}
-	}else{
-		dm = new DrumMachine(messenger);
-		std::cout << "not allowing takeoff" << std::endl;
-	}
+	DrumMachine* dm = new DrumMachine(messenger);
 	
 	signal(SIGINT, [](int signum) {
 		std::cout << "\nDrum machine shutdown" << std::endl;

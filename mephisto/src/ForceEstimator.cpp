@@ -3,7 +3,7 @@
 
 //Offset for the force sensor
 #define g 0.98
-
+/*
 //LPF constants 4th order butterworth centered at 5Hz
 #define a1 0.003495
 #define b1 1.881765
@@ -19,7 +19,7 @@ const double A_low[] = {1.0,-3.58973388711218, 4.85127588251942, -2.924052656162
 #define d2 -0.969309
 const double B_hi[] = {0.9890, -1.9779, 0.9890};
 const double A_hi[] = {1.0000, -1.9778, 0.9780};
-
+*/
 
 //Replace the above two and use one bandpass filter
 //9th order bandpass filter centered at 0.43Hz to 8.72Hz
@@ -27,7 +27,7 @@ const double A_hi[] = {1.0000, -1.9778, 0.9780};
 //TODO
 //>> [n, Wn] = buttord([0.0006 0.06], [0.0003 0.12], 2, 20);
 //>> [B, A] = butter(n, Wn);
-
+/*
 //This one is poorly chosen, change asap
 //[n, Wn] = buttord([0.005 0.075], [0.0025 0.15], 2, 20)
 //[B, A] = butter(n, Wn);
@@ -40,21 +40,27 @@ const double A[] = {1.0,  -7.30673311931724356327322311699390411377 ,  23.389135
 					-42.845005908620073853398935170844197273254,  49.128667204783610600316023919731378555298, -36.111509797980986036236572545021772384644,
 					 16.616949988370382840230377041734755039215,  -4.376691321298828540875547332689166069031,   0.505187400318038215552007841324666514993};
 
-
-
-//bessel filter now, much better
-/*
-const double B_Bessel[] = { 9.68823931442551e-12, 8.71941538298296e-11, 3.48776615319318e-10, 8.13812102411743e-10, 1.22071815361761e-09, 
-							1.22071815361761e-09, 8.13812102411743e-10, 3.48776615319318e-10, 8.71941538298296e-11, 9.68823931442551e-12};
-const double A_Bessel[] = {1.0, -8.19099809750919, 29.8451339897286, -63.4895602822669, 86.8988332064757, -79.3589568691234, 
-							48.3550450130449, -18.9561805048015, 4.33829625542995, -0.441612706017785};
 */
+/*
+//bessel filter now, much better
 
 const double B_bh[] = { 0.996007776488598, -3.98403110595439, 5.97604665893159, -3.98403110595439, 0.996007776488599};
 const double A_bh[] = { 1.0, -3.99200185984714, 5.97603299013906, -3.97606035204219, 0.992029221789179};
 
 const double B_bl[] = { 0.000166579901978436, 0.000666319607910637, 0.000999479411877502, 0.000666319607907084, 0.000166579901980213};
 const double A_bl[] = { 1.0, -3.25292187235359, 4.00122951546180, -2.20423571645940, 0.458593351782839};
+*/
+//optimizing for music, want lower delays, using lower order filters
+//2nd order butterworth HP filter cutoff at 0.1Hz
+const double HP_B[] = {0.978248460365240, -2.93474538109572, 2.93474538109572, -0.978248460365240};
+const double HP_A[] = {1.0, -2.95601858871573, 2.91299904400092, -0.956970050205270};
+
+//5th order bessel filters, using different parameters for linear (accelerometer) and angular (gyro)
+const double LP_lin_B[] = {0.00377012937874832, 0.0188506468937377, 0.0377012937874897, 0.0377012937874777, 0.0188506468937436, 0.00377012937874834};
+const double LP_lin_A[] = {1.0, -2.10700786449859, 2.03032719802362, -1.06633509781897, 0.298985442442492, -0.0353255380286102};
+
+const double LP_rot_B[] = {0.00544654458527871, 0.0272327229263958, 0.0544654458527842, 0.0544654458527893, 0.0272327229263932, 0.00544654458527915};
+const double LP_rot_A[] = {1.0, -1.85707495483803, 1.65667465828658, -0.819524444742693, 0.219100882740600, -0.0248867147175389};
 
 double sgn(double x){
 	if(x < 0.0){
@@ -154,21 +160,22 @@ void ForceEstimator::estimate(const ardrone_autonomy::NavdataConstPtr navdata){
 	outputs[0].angular.y = 0;
 	outputs[0].angular.z = 0;
 	
-	for(int i = 0; i < 5; i++){
+	//Lowpass
+	for(int i = 0; i < 6; i++){
 		if(i != 0){
-			outputs[0].linear.x += -A_bl[i]*outputs[i].linear.x + B_bl[i]*inputs[i].linear.x;
-			outputs[0].linear.y += -A_bl[i]*outputs[i].linear.y + B_bl[i]*inputs[i].linear.y;
-			outputs[0].linear.z += -A_bl[i]*outputs[i].linear.z + B_bl[i]*inputs[i].linear.z;
-			outputs[0].angular.x += -A_bl[i]*outputs[i].angular.x + B_bl[i]*inputs[i].angular.x;
-			outputs[0].angular.y += -A_bl[i]*outputs[i].angular.y + B_bl[i]*inputs[i].angular.y;
-			outputs[0].angular.z += -A_bl[i]*outputs[i].angular.z + B_bl[i]*inputs[i].angular.z;
+			outputs[0].linear.x += -LP_lin_A[i]*outputs[i].linear.x + LP_lin_B[i]*inputs[i].linear.x;
+			outputs[0].linear.y += -LP_lin_A[i]*outputs[i].linear.y + LP_lin_B[i]*inputs[i].linear.y;
+			outputs[0].linear.z += -LP_lin_A[i]*outputs[i].linear.z + LP_lin_B[i]*inputs[i].linear.z;
+			outputs[0].angular.x += -LP_rot_A[i]*outputs[i].angular.x + LP_rot_B[i]*inputs[i].angular.x;
+			outputs[0].angular.y += -LP_rot_A[i]*outputs[i].angular.y + LP_rot_B[i]*inputs[i].angular.y;
+			outputs[0].angular.z += -LP_rot_A[i]*outputs[i].angular.z + LP_rot_B[i]*inputs[i].angular.z;
 		}else{
-			outputs[0].linear.x += B_bl[i]*inputs[i].linear.x;
-			outputs[0].linear.y += B_bl[i]*inputs[i].linear.y;
-			outputs[0].linear.z += B_bl[i]*inputs[i].linear.z;
-			outputs[0].angular.x += B_bl[i]*inputs[i].angular.x;
-			outputs[0].angular.y += B_bl[i]*inputs[i].angular.y;
-			outputs[0].angular.z += B_bl[i]*inputs[i].angular.z;
+			outputs[0].linear.x += LP_lin_B[i]*inputs[i].linear.x;
+			outputs[0].linear.y += LP_lin_B[i]*inputs[i].linear.y;
+			outputs[0].linear.z += LP_lin_B[i]*inputs[i].linear.z;
+			outputs[0].angular.x += LP_rot_B[i]*inputs[i].angular.x;
+			outputs[0].angular.y += LP_rot_B[i]*inputs[i].angular.y;
+			outputs[0].angular.z += LP_rot_B[i]*inputs[i].angular.z;
 		}
 	}
 	
@@ -202,7 +209,7 @@ void ForceEstimator::estimate(const ardrone_autonomy::NavdataConstPtr navdata){
 	}
 	*/
 	
-	//Second order IIR highpass filter with cutoff frequency at 0.5Hz
+	//Highpass
 	outputs2[0].linear.x = 0;
 	outputs2[0].linear.y = 0;
 	outputs2[0].linear.z = 0;
@@ -210,21 +217,21 @@ void ForceEstimator::estimate(const ardrone_autonomy::NavdataConstPtr navdata){
 	outputs2[0].angular.y = 0;
 	outputs2[0].angular.z = 0;
 	
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < 4; i++){
 		if(i != 0){
-			outputs2[0].linear.x += -A_bh[i]*outputs2[i].linear.x + B_bh[i]*outputs[i].linear.x;
-			outputs2[0].linear.y += -A_bh[i]*outputs2[i].linear.y + B_bh[i]*outputs[i].linear.y;
-			outputs2[0].linear.z += -A_bh[i]*outputs2[i].linear.z + B_bh[i]*outputs[i].linear.z;
-			outputs2[0].angular.x += -A_bh[i]*outputs2[i].angular.x + B_bh[i]*outputs[i].angular.x;
-			outputs2[0].angular.y += -A_bh[i]*outputs2[i].angular.y + B_bh[i]*outputs[i].angular.y;
-			outputs2[0].angular.z += -A_bh[i]*outputs2[i].angular.z + B_bh[i]*outputs[i].angular.z;
+			outputs2[0].linear.x += -HP_A[i]*outputs2[i].linear.x + HP_B[i]*outputs[i].linear.x;
+			outputs2[0].linear.y += -HP_A[i]*outputs2[i].linear.y + HP_B[i]*outputs[i].linear.y;
+			outputs2[0].linear.z += -HP_A[i]*outputs2[i].linear.z + HP_B[i]*outputs[i].linear.z;
+			outputs2[0].angular.x += -HP_A[i]*outputs2[i].angular.x + HP_B[i]*outputs[i].angular.x;
+			outputs2[0].angular.y += -HP_A[i]*outputs2[i].angular.y + HP_B[i]*outputs[i].angular.y;
+			outputs2[0].angular.z += -HP_A[i]*outputs2[i].angular.z + HP_B[i]*outputs[i].angular.z;
 		}else{
-			outputs2[0].linear.x += B_bh[i]*outputs[i].linear.x;
-			outputs2[0].linear.y += B_bh[i]*outputs[i].linear.y;
-			outputs2[0].linear.z += B_bh[i]*outputs[i].linear.z;
-			outputs2[0].angular.x += B_bh[i]*outputs[i].angular.x;
-			outputs2[0].angular.y += B_bh[i]*outputs[i].angular.y;
-			outputs2[0].angular.z += B_bh[i]*outputs[i].angular.z;
+			outputs2[0].linear.x += HP_B[i]*outputs[i].linear.x;
+			outputs2[0].linear.y += HP_B[i]*outputs[i].linear.y;
+			outputs2[0].linear.z += HP_B[i]*outputs[i].linear.z;
+			outputs2[0].angular.x += HP_B[i]*outputs[i].angular.x;
+			outputs2[0].angular.y += HP_B[i]*outputs[i].angular.y;
+			outputs2[0].angular.z += HP_B[i]*outputs[i].angular.z;
 		}
 	}
 	
