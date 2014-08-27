@@ -17,7 +17,7 @@
   <depend package="geometry_msgs"/>
   <rosdep name="libblas-dev"/>
   <rosdep name="liblapack-dev"/>
-  <export><cpp cflags="-I${prefix}/srv/cpp -I${prefix}/msg/cpp"/></export>0
+  <export><cpp cflags="-I${prefix}/srv/cpp -I${prefix}/msg/cpp"/></export>
+  <export><cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -lforce_estimator -lstate_machine"/></export>
 </package>
-
 

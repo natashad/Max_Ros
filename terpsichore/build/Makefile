@@ -254,6 +254,19 @@ interpreter/fast:
 .PHONY : interpreter/fast
 
 #=============================================================================
+# Target rules for targets named latency_test
+
+# Build rule for target.
+latency_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 latency_test
+.PHONY : latency_test
+
+# fast build rule for target.
+latency_test/fast:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/build
+.PHONY : latency_test/fast
+
+#=============================================================================
 # Target rules for targets named osc_relay
 
 # Build rule for target.
@@ -485,6 +498,54 @@ src/ConductorNode.cpp.s:
 	$(MAKE) -f CMakeFiles/interpreter.dir/build.make CMakeFiles/interpreter.dir/src/ConductorNode.cpp.s
 .PHONY : src/ConductorNode.cpp.s
 
+src/LatencyTest.o: src/LatencyTest.cpp.o
+.PHONY : src/LatencyTest.o
+
+# target to build an object file
+src/LatencyTest.cpp.o:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/src/LatencyTest.cpp.o
+.PHONY : src/LatencyTest.cpp.o
+
+src/LatencyTest.i: src/LatencyTest.cpp.i
+.PHONY : src/LatencyTest.i
+
+# target to preprocess a source file
+src/LatencyTest.cpp.i:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/src/LatencyTest.cpp.i
+.PHONY : src/LatencyTest.cpp.i
+
+src/LatencyTest.s: src/LatencyTest.cpp.s
+.PHONY : src/LatencyTest.s
+
+# target to generate assembly for a file
+src/LatencyTest.cpp.s:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/src/LatencyTest.cpp.s
+.PHONY : src/LatencyTest.cpp.s
+
+src/LatencyTestReceiver.o: src/LatencyTestReceiver.cpp.o
+.PHONY : src/LatencyTestReceiver.o
+
+# target to build an object file
+src/LatencyTestReceiver.cpp.o:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/src/LatencyTestReceiver.cpp.o
+.PHONY : src/LatencyTestReceiver.cpp.o
+
+src/LatencyTestReceiver.i: src/LatencyTestReceiver.cpp.i
+.PHONY : src/LatencyTestReceiver.i
+
+# target to preprocess a source file
+src/LatencyTestReceiver.cpp.i:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/src/LatencyTestReceiver.cpp.i
+.PHONY : src/LatencyTestReceiver.cpp.i
+
+src/LatencyTestReceiver.s: src/LatencyTestReceiver.cpp.s
+.PHONY : src/LatencyTestReceiver.s
+
+# target to generate assembly for a file
+src/LatencyTestReceiver.cpp.s:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/src/LatencyTestReceiver.cpp.s
+.PHONY : src/LatencyTestReceiver.cpp.s
+
 src/LiveReceiver.o: src/LiveReceiver.cpp.o
 .PHONY : src/LiveReceiver.o
 
@@ -576,6 +637,7 @@ help:
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... interpreter"
+	@echo "... latency_test"
 	@echo "... list_install_components"
 	@echo "... osc_relay"
 	@echo "... rebuild_cache"
@@ -597,6 +659,12 @@ help:
 	@echo "... src/ConductorNode.o"
 	@echo "... src/ConductorNode.i"
 	@echo "... src/ConductorNode.s"
+	@echo "... src/LatencyTest.o"
+	@echo "... src/LatencyTest.i"
+	@echo "... src/LatencyTest.s"
+	@echo "... src/LatencyTestReceiver.o"
+	@echo "... src/LatencyTestReceiver.i"
+	@echo "... src/LatencyTestReceiver.s"
 	@echo "... src/LiveReceiver.o"
 	@echo "... src/LiveReceiver.i"
 	@echo "... src/LiveReceiver.s"

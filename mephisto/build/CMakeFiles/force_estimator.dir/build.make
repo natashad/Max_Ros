@@ -108,15 +108,15 @@ CMakeFiles/force_estimator.dir/src/Core.cpp.o: /opt/ros/hydro/share/cv_bridge/pa
 CMakeFiles/force_estimator.dir/src/Core.cpp.o: /opt/ros/hydro/share/dynamic_reconfigure/package.xml
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/mephisto/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/force_estimator.dir/src/Core.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/force_estimator.dir/src/Core.cpp.o -c /home/wavy/workspace/ros/mephisto/src/Core.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/force_estimator.dir/src/Core.cpp.o -c /home/wavy/workspace/ros/mephisto/src/Core.cpp
 
 CMakeFiles/force_estimator.dir/src/Core.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/force_estimator.dir/src/Core.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/mephisto/src/Core.cpp > CMakeFiles/force_estimator.dir/src/Core.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/mephisto/src/Core.cpp > CMakeFiles/force_estimator.dir/src/Core.cpp.i
 
 CMakeFiles/force_estimator.dir/src/Core.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/force_estimator.dir/src/Core.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/mephisto/src/Core.cpp -o CMakeFiles/force_estimator.dir/src/Core.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/mephisto/src/Core.cpp -o CMakeFiles/force_estimator.dir/src/Core.cpp.s
 
 CMakeFiles/force_estimator.dir/src/Core.cpp.o.requires:
 .PHONY : CMakeFiles/force_estimator.dir/src/Core.cpp.o.requires
@@ -189,15 +189,15 @@ CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o: /opt/ros/hydro/sha
 CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o: /opt/ros/hydro/share/dynamic_reconfigure/package.xml
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/mephisto/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o -c /home/wavy/workspace/ros/mephisto/src/ForceEstimationNode.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o -c /home/wavy/workspace/ros/mephisto/src/ForceEstimationNode.cpp
 
 CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/mephisto/src/ForceEstimationNode.cpp > CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/mephisto/src/ForceEstimationNode.cpp > CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.i
 
 CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/mephisto/src/ForceEstimationNode.cpp -o CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/mephisto/src/ForceEstimationNode.cpp -o CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.s
 
 CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o.requires:
 .PHONY : CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o.requires
@@ -270,15 +270,15 @@ CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o: /opt/ros/hydro/share/cv
 CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o: /opt/ros/hydro/share/dynamic_reconfigure/package.xml
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/mephisto/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o -c /home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -o CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o -c /home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp
 
 CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp > CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -E /home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp > CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.i
 
 CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp -o CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -W -Wall -Wno-unused-parameter -fno-strict-aliasing -pthread -S /home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp -o CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.s
 
 CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o.requires:
 .PHONY : CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o.requires
@@ -298,16 +298,16 @@ force_estimator_OBJECTS = \
 # External object files for target force_estimator
 force_estimator_EXTERNAL_OBJECTS =
 
-../bin/force_estimator: CMakeFiles/force_estimator.dir/src/Core.cpp.o
-../bin/force_estimator: CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o
-../bin/force_estimator: CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o
-../bin/force_estimator: CMakeFiles/force_estimator.dir/build.make
-../bin/force_estimator: CMakeFiles/force_estimator.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable ../bin/force_estimator"
+../lib/libforce_estimator.so: CMakeFiles/force_estimator.dir/src/Core.cpp.o
+../lib/libforce_estimator.so: CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o
+../lib/libforce_estimator.so: CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o
+../lib/libforce_estimator.so: CMakeFiles/force_estimator.dir/build.make
+../lib/libforce_estimator.so: CMakeFiles/force_estimator.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX shared library ../lib/libforce_estimator.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/force_estimator.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/force_estimator.dir/build: ../bin/force_estimator
+CMakeFiles/force_estimator.dir/build: ../lib/libforce_estimator.so
 .PHONY : CMakeFiles/force_estimator.dir/build
 
 CMakeFiles/force_estimator.dir/requires: CMakeFiles/force_estimator.dir/src/Core.cpp.o.requires

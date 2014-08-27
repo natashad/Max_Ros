@@ -5,7 +5,6 @@
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/_catkin_empty_exported_target.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/clean_test_results.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/doxygen.dir
-/home/wavy/workspace/ros/mephisto/build/CMakeFiles/drum.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/force_estimator.dir
 /home/wavy/workspace/ros/mephisto/build/gtest/CMakeFiles/gtest.dir
 /home/wavy/workspace/ros/mephisto/build/gtest/CMakeFiles/gtest_main.dir
@@ -20,6 +19,7 @@
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_gensrv.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_gensrv_all.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/run_tests.dir
+/home/wavy/workspace/ros/mephisto/build/CMakeFiles/state_machine.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/test.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/test-future.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/test-results.dir

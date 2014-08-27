@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/wavy/workspace/ros/mephisto/src/Core.cpp
+Core.h
+/home/wavy/workspace/ros/mephisto/src/Core.h
+
 /home/wavy/workspace/ros/mephisto/src/Core.h
 ros/ros.h
 /home/wavy/workspace/ros/mephisto/src/ros/ros.h
@@ -20,26 +24,6 @@ string
 list
 -
 cmath
--
-
-/home/wavy/workspace/ros/mephisto/src/ForceEstimator.cpp
-ForceEstimator.h
-/home/wavy/workspace/ros/mephisto/src/ForceEstimator.h
-
-/home/wavy/workspace/ros/mephisto/src/ForceEstimator.h
-geometry_msgs/Twist.h
-/home/wavy/workspace/ros/mephisto/src/geometry_msgs/Twist.h
-std_msgs/Empty.h
-/home/wavy/workspace/ros/mephisto/src/std_msgs/Empty.h
-Core.h
-/home/wavy/workspace/ros/mephisto/src/Core.h
-ardrone_autonomy/Navdata.h
--
-string
--
-iostream
--
-complex
 -
 
 /opt/ros/hydro/include/XmlRpcDecl.h

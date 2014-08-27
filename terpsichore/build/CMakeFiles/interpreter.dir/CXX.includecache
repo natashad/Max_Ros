@@ -86,16 +86,6 @@ SFML/Graphics.hpp
 X11/Xlib.h
 -
 
-/home/wavy/workspace/ros/terpsichore/src/LiveReceiver.cpp
-LiveReceiver.h
-/home/wavy/workspace/ros/terpsichore/src/LiveReceiver.h
-sstream
--
-iostream
--
-cmath
--
-
 /home/wavy/workspace/ros/terpsichore/src/LiveReceiver.h
 oscpack/osc/OscReceivedElements.h
 -
@@ -108,14 +98,6 @@ string
 vector
 -
 map
--
-
-/home/wavy/workspace/ros/terpsichore/src/Translator.cpp
-Translator.h
-/home/wavy/workspace/ros/terpsichore/src/Translator.h
-cmath
--
-iostream
 -
 
 /home/wavy/workspace/ros/terpsichore/src/Translator.h

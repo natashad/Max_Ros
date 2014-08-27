@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/wavy/workspace/ros/drum_machine_drone/build/devel/setup.sh

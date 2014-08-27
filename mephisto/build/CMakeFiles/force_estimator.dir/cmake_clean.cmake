@@ -2,8 +2,8 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/force_estimator.dir/src/Core.cpp.o"
   "CMakeFiles/force_estimator.dir/src/ForceEstimationNode.cpp.o"
   "CMakeFiles/force_estimator.dir/src/ForceEstimator.cpp.o"
-  "../bin/force_estimator.pdb"
-  "../bin/force_estimator"
+  "../lib/libforce_estimator.pdb"
+  "../lib/libforce_estimator.so"
 )
 
 # Per-language clean rules from dependency scanning.

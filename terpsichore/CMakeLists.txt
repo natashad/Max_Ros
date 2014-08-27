@@ -72,3 +72,26 @@ rosbuild_add_executable(osc_relay ${OSC_RELAY_SOURCE_FILES} ${OSC_RELAY_HEADER_F
 target_link_libraries(osc_relay ${OSC_LIBRARIES} m)
 add_definitions(-std=c++0x)
 #add_dependencies(drone_stateestimation thirdparty ${PROJECT_NAME}_gencpp ${PROJECT_NAME}_gencfg)
+
+# ------------------------------- Latency Test ---------------------------------
+# set header ans source files
+set(LATENCY_TEST_SOURCE_FILES
+    src/LatencyTest.cpp
+    src/LatencyTestReceiver.cpp
+)
+set(LATENCY_TEST_HEADER_FILES
+	src/LatencyTestReceiver.h
+)
+
+# set required libs and headers
+include_directories(
+)  
+
+link_directories(
+)
+set(OSC_LIBRARIES oscpack)
+
+# build!
+rosbuild_add_executable(latency_test ${LATENCY_TEST_SOURCE_FILES} ${LATENCY_TEST_HEADER_FILES})
+target_link_libraries(latency_test ${OSC_LIBRARIES} m)
+add_definitions(-std=c++0x)

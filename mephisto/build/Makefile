@@ -228,19 +228,6 @@ doxygen/fast:
 .PHONY : doxygen/fast
 
 #=============================================================================
-# Target rules for targets named drum
-
-# Build rule for target.
-drum: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 drum
-.PHONY : drum
-
-# fast build rule for target.
-drum/fast:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/build
-.PHONY : drum/fast
-
-#=============================================================================
 # Target rules for targets named force_estimator
 
 # Build rule for target.
@@ -397,6 +384,19 @@ run_tests/fast:
 .PHONY : run_tests/fast
 
 #=============================================================================
+# Target rules for targets named state_machine
+
+# Build rule for target.
+state_machine: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 state_machine
+.PHONY : state_machine
+
+# fast build rule for target.
+state_machine/fast:
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/build
+.PHONY : state_machine/fast
+
+#=============================================================================
 # Target rules for targets named test
 
 # Build rule for target.
@@ -492,10 +492,10 @@ src/Core.o: src/Core.cpp.o
 
 # target to build an object file
 src/Core.cpp.o:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/Core.cpp.o
 	$(MAKE) -f CMakeFiles/force_estimator.dir/build.make CMakeFiles/force_estimator.dir/src/Core.cpp.o
 	$(MAKE) -f CMakeFiles/height_controller.dir/build.make CMakeFiles/height_controller.dir/src/Core.cpp.o
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/Core.cpp.o
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/Core.cpp.o
 .PHONY : src/Core.cpp.o
 
 src/Core.i: src/Core.cpp.i
@@ -503,10 +503,10 @@ src/Core.i: src/Core.cpp.i
 
 # target to preprocess a source file
 src/Core.cpp.i:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/Core.cpp.i
 	$(MAKE) -f CMakeFiles/force_estimator.dir/build.make CMakeFiles/force_estimator.dir/src/Core.cpp.i
 	$(MAKE) -f CMakeFiles/height_controller.dir/build.make CMakeFiles/height_controller.dir/src/Core.cpp.i
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/Core.cpp.i
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/Core.cpp.i
 .PHONY : src/Core.cpp.i
 
 src/Core.s: src/Core.cpp.s
@@ -514,67 +514,19 @@ src/Core.s: src/Core.cpp.s
 
 # target to generate assembly for a file
 src/Core.cpp.s:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/Core.cpp.s
 	$(MAKE) -f CMakeFiles/force_estimator.dir/build.make CMakeFiles/force_estimator.dir/src/Core.cpp.s
 	$(MAKE) -f CMakeFiles/height_controller.dir/build.make CMakeFiles/height_controller.dir/src/Core.cpp.s
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/Core.cpp.s
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/Core.cpp.s
 .PHONY : src/Core.cpp.s
-
-src/DrumMachine.o: src/DrumMachine.cpp.o
-.PHONY : src/DrumMachine.o
-
-# target to build an object file
-src/DrumMachine.cpp.o:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/DrumMachine.cpp.o
-.PHONY : src/DrumMachine.cpp.o
-
-src/DrumMachine.i: src/DrumMachine.cpp.i
-.PHONY : src/DrumMachine.i
-
-# target to preprocess a source file
-src/DrumMachine.cpp.i:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/DrumMachine.cpp.i
-.PHONY : src/DrumMachine.cpp.i
-
-src/DrumMachine.s: src/DrumMachine.cpp.s
-.PHONY : src/DrumMachine.s
-
-# target to generate assembly for a file
-src/DrumMachine.cpp.s:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/DrumMachine.cpp.s
-.PHONY : src/DrumMachine.cpp.s
-
-src/DrumNode.o: src/DrumNode.cpp.o
-.PHONY : src/DrumNode.o
-
-# target to build an object file
-src/DrumNode.cpp.o:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/DrumNode.cpp.o
-.PHONY : src/DrumNode.cpp.o
-
-src/DrumNode.i: src/DrumNode.cpp.i
-.PHONY : src/DrumNode.i
-
-# target to preprocess a source file
-src/DrumNode.cpp.i:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/DrumNode.cpp.i
-.PHONY : src/DrumNode.cpp.i
-
-src/DrumNode.s: src/DrumNode.cpp.s
-.PHONY : src/DrumNode.s
-
-# target to generate assembly for a file
-src/DrumNode.cpp.s:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/DrumNode.cpp.s
-.PHONY : src/DrumNode.cpp.s
 
 src/FloatState.o: src/FloatState.cpp.o
 .PHONY : src/FloatState.o
 
 # target to build an object file
 src/FloatState.cpp.o:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/FloatState.cpp.o
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/FloatState.cpp.o
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/FloatState.cpp.o
 .PHONY : src/FloatState.cpp.o
 
 src/FloatState.i: src/FloatState.cpp.i
@@ -582,8 +534,8 @@ src/FloatState.i: src/FloatState.cpp.i
 
 # target to preprocess a source file
 src/FloatState.cpp.i:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/FloatState.cpp.i
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/FloatState.cpp.i
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/FloatState.cpp.i
 .PHONY : src/FloatState.cpp.i
 
 src/FloatState.s: src/FloatState.cpp.s
@@ -591,8 +543,8 @@ src/FloatState.s: src/FloatState.cpp.s
 
 # target to generate assembly for a file
 src/FloatState.cpp.s:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/FloatState.cpp.s
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/FloatState.cpp.s
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/FloatState.cpp.s
 .PHONY : src/FloatState.cpp.s
 
 src/ForceEstimationNode.o: src/ForceEstimationNode.cpp.o
@@ -697,6 +649,7 @@ src/ReactorNode.o: src/ReactorNode.cpp.o
 # target to build an object file
 src/ReactorNode.cpp.o:
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/ReactorNode.cpp.o
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/ReactorNode.cpp.o
 .PHONY : src/ReactorNode.cpp.o
 
 src/ReactorNode.i: src/ReactorNode.cpp.i
@@ -705,6 +658,7 @@ src/ReactorNode.i: src/ReactorNode.cpp.i
 # target to preprocess a source file
 src/ReactorNode.cpp.i:
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/ReactorNode.cpp.i
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/ReactorNode.cpp.i
 .PHONY : src/ReactorNode.cpp.i
 
 src/ReactorNode.s: src/ReactorNode.cpp.s
@@ -713,6 +667,7 @@ src/ReactorNode.s: src/ReactorNode.cpp.s
 # target to generate assembly for a file
 src/ReactorNode.cpp.s:
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/ReactorNode.cpp.s
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/ReactorNode.cpp.s
 .PHONY : src/ReactorNode.cpp.s
 
 src/State.o: src/State.cpp.o
@@ -720,8 +675,8 @@ src/State.o: src/State.cpp.o
 
 # target to build an object file
 src/State.cpp.o:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/State.cpp.o
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/State.cpp.o
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/State.cpp.o
 .PHONY : src/State.cpp.o
 
 src/State.i: src/State.cpp.i
@@ -729,8 +684,8 @@ src/State.i: src/State.cpp.i
 
 # target to preprocess a source file
 src/State.cpp.i:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/State.cpp.i
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/State.cpp.i
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/State.cpp.i
 .PHONY : src/State.cpp.i
 
 src/State.s: src/State.cpp.s
@@ -738,8 +693,8 @@ src/State.s: src/State.cpp.s
 
 # target to generate assembly for a file
 src/State.cpp.s:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/State.cpp.s
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/State.cpp.s
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/State.cpp.s
 .PHONY : src/State.cpp.s
 
 src/StateMachine.o: src/StateMachine.cpp.o
@@ -747,8 +702,8 @@ src/StateMachine.o: src/StateMachine.cpp.o
 
 # target to build an object file
 src/StateMachine.cpp.o:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/StateMachine.cpp.o
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/StateMachine.cpp.o
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/StateMachine.cpp.o
 .PHONY : src/StateMachine.cpp.o
 
 src/StateMachine.i: src/StateMachine.cpp.i
@@ -756,8 +711,8 @@ src/StateMachine.i: src/StateMachine.cpp.i
 
 # target to preprocess a source file
 src/StateMachine.cpp.i:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/StateMachine.cpp.i
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/StateMachine.cpp.i
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/StateMachine.cpp.i
 .PHONY : src/StateMachine.cpp.i
 
 src/StateMachine.s: src/StateMachine.cpp.s
@@ -765,8 +720,8 @@ src/StateMachine.s: src/StateMachine.cpp.s
 
 # target to generate assembly for a file
 src/StateMachine.cpp.s:
-	$(MAKE) -f CMakeFiles/drum.dir/build.make CMakeFiles/drum.dir/src/StateMachine.cpp.s
 	$(MAKE) -f CMakeFiles/reactor.dir/build.make CMakeFiles/reactor.dir/src/StateMachine.cpp.s
+	$(MAKE) -f CMakeFiles/state_machine.dir/build.make CMakeFiles/state_machine.dir/src/StateMachine.cpp.s
 .PHONY : src/StateMachine.cpp.s
 
 # Help Target
@@ -782,7 +737,6 @@ help:
 	@echo "... _catkin_empty_exported_target"
 	@echo "... clean_test_results"
 	@echo "... doxygen"
-	@echo "... drum"
 	@echo "... edit_cache"
 	@echo "... force_estimator"
 	@echo "... height_controller"
@@ -801,6 +755,7 @@ help:
 	@echo "... rospack_gensrv"
 	@echo "... rospack_gensrv_all"
 	@echo "... run_tests"
+	@echo "... state_machine"
 	@echo "... test"
 	@echo "... test-future"
 	@echo "... test-results"
@@ -811,12 +766,6 @@ help:
 	@echo "... src/Core.o"
 	@echo "... src/Core.i"
 	@echo "... src/Core.s"
-	@echo "... src/DrumMachine.o"
-	@echo "... src/DrumMachine.i"
-	@echo "... src/DrumMachine.s"
-	@echo "... src/DrumNode.o"
-	@echo "... src/DrumNode.i"
-	@echo "... src/DrumNode.s"
 	@echo "... src/FloatState.o"
 	@echo "... src/FloatState.i"
 	@echo "... src/FloatState.s"

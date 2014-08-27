@@ -20,7 +20,7 @@
 ####################
 
 # Import ROS libraries, rospy, and load manifest file for access to project dependencies
-import roslib; roslib.load_manifest('dsl__wavedna')
+import roslib; roslib.load_manifest('ardrone_tutorials')
 import rospy
 
 # Import math for trigonometric functions
@@ -35,21 +35,22 @@ from time import time
 ###################
 
 # StateData is used to send desired coordinates to the drone
-from dsl__msg.msg import StateData
+from ardrone_tutorials.msg import StateData
 
 # Bool is used for waypoint requests and Float64 for time
 from std_msgs.msg import Bool
 from std_msgs.msg import Float64
 
 # Pair is used to send time and signature from WaveDNA
-from dsl__msg.msg import pair
+from terpsichore.msg import pair
 
 
 ##################
 # SET PARAMETERS #
 ##################
 
-scale = 1.0
+scaley = 0.4
+scalez = 0.5
 base_height = 1.0
 
 
@@ -162,7 +163,7 @@ class Conductor(object):
         self.sub_request = rospy.Subscriber('/waypoint_request', Bool, self.process_request)
 
         # Subscribe to the WaveDNA data
-        self.sub_wavedna = rospy.Subscriber('/conductor_time', pair, self.determine_state)
+        self.sub_wavedna = rospy.Subscriber('/terpsichore/conductor_time', pair, self.determine_state)
 
         # Publish to the desired_coordinates topic
         self.pub_desired = rospy.Publisher('/path_coordinates', StateData)
@@ -225,15 +226,15 @@ class Conductor(object):
         self.ax = 0.0
 
         # scale to make feasible
-        self.x = self.x * scale
-        self.vx = self.vx * scale
-        self.ax = self.ax * scale
-        self.y = self.y * scale
-        self.vy = self.vy * scale
-        self.ay = self.ay * scale
-        self.z = self.z * scale + base_height
-        self.vz = self.vz * scale
-        self.az = self.az * scale
+        self.x = self.x * scaley
+        self.vx = self.vx * scaley
+        self.ax = self.ax * scaley
+        self.y = self.y * scaley
+        self.vy = self.vy * scaley
+        self.ay = self.ay * scaley
+        self.z = self.z * scalez + base_height
+        self.vz = self.vz * scalez
+        self.az = self.az * scalez
 
 
     def determine_range(self, sig, t):

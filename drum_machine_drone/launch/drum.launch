@@ -1,0 +1,21 @@
+<launch>
+	<!-- Launches the AR.Drone driver -->
+	<node name="ardrone_driver" pkg="ardrone_autonomy" type="ardrone_driver" args="-ip 192.168.2.40" output="screen" clear_params="true">
+	    <param name="outdoor" value="0" /> <!-- If we are flying outdoors, will select more aggressive default settings -->
+	    <param name="flight_without_shell" value="0" /> <!-- Changes internal controller gains if we are flying without the propeller guard -->
+	    <param name="realtime_navdata" value="True" />
+	    <param name="navdata_demo" value="0" />
+	    <param name="altitude_max" value="3000" /> <!-- in millimeters = 3 meters = 9' -->
+        <param name="altitude_min" value="500" /> <!-- in millimeters = 5cm = 2" -->
+        <param name="euler_angle_max" value="0.2" /> <!-- maximum allowable body angle in radians = 5 degrees -->
+        <param name="control_vz_max" value="200" /> <!-- maximum z velocity in mm/sec = 0.2m/sec -->
+	    <param name="control_yaw" value="10.0" /> <!-- maximum rotation rate in radians/sec = 40 degrees per second (1/9 rev/sec) -->
+	    <param name="do_imu_calibration" value="true" />
+	</node>
+	
+	<!-- Launches the keyboard controller -->
+	<node name="force_estimator" pkg="mephisto" type="force_estimator" output="screen" required="true"/>
+	<node name="osc_relay" pkg="terpsichore" type="osc_relay" args="192.168.2.104:7830" output="screen" required="true" />
+	<node name="drum" pkg="drum_machine_drone" type="drum" output="screen" required="true"/>
+	<node name="keyboard_controller" pkg="ardrone_tutorials" type="keyboard_controller.py" required="false"/>
+</launch>

@@ -333,13 +333,48 @@ clean: CMakeFiles/interpreter.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/latency_test.dir
+
+# All Build rule for target.
+CMakeFiles/latency_test.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/depend
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/terpsichore/build/CMakeFiles  14 15
+	@echo "Built target latency_test"
+.PHONY : CMakeFiles/latency_test.dir/all
+
+# Include target in all.
+all: CMakeFiles/latency_test.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/latency_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wavy/workspace/ros/terpsichore/build/CMakeFiles 9
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/latency_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wavy/workspace/ros/terpsichore/build/CMakeFiles 0
+.PHONY : CMakeFiles/latency_test.dir/rule
+
+# Convenience name for target.
+latency_test: CMakeFiles/latency_test.dir/rule
+.PHONY : latency_test
+
+# clean rule for target.
+CMakeFiles/latency_test.dir/clean:
+	$(MAKE) -f CMakeFiles/latency_test.dir/build.make CMakeFiles/latency_test.dir/clean
+.PHONY : CMakeFiles/latency_test.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/latency_test.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/osc_relay.dir
 
 # All Build rule for target.
 CMakeFiles/osc_relay.dir/all: CMakeFiles/rosbuild_precompile.dir/all
 	$(MAKE) -f CMakeFiles/osc_relay.dir/build.make CMakeFiles/osc_relay.dir/depend
 	$(MAKE) -f CMakeFiles/osc_relay.dir/build.make CMakeFiles/osc_relay.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/terpsichore/build/CMakeFiles  14
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/terpsichore/build/CMakeFiles  16
 	@echo "Built target osc_relay"
 .PHONY : CMakeFiles/osc_relay.dir/all
 
@@ -402,8 +437,8 @@ clean: CMakeFiles/rosbuild_clean-test-results.dir/clean
 # Target rules for target CMakeFiles/rosbuild_precompile.dir
 
 # All Build rule for target.
-CMakeFiles/rosbuild_precompile.dir/all: CMakeFiles/rospack_genmsg.dir/all
 CMakeFiles/rosbuild_precompile.dir/all: CMakeFiles/rospack_genmsg_libexe.dir/all
+CMakeFiles/rosbuild_precompile.dir/all: CMakeFiles/rospack_genmsg.dir/all
 	$(MAKE) -f CMakeFiles/rosbuild_precompile.dir/build.make CMakeFiles/rosbuild_precompile.dir/depend
 	$(MAKE) -f CMakeFiles/rosbuild_precompile.dir/build.make CMakeFiles/rosbuild_precompile.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/terpsichore/build/CMakeFiles 
@@ -466,8 +501,8 @@ clean: CMakeFiles/rosbuild_premsgsrvgen.dir/clean
 
 # All Build rule for target.
 CMakeFiles/rospack_genmsg.dir/all: CMakeFiles/ROSBUILD_genmsg_lisp.dir/all
-CMakeFiles/rospack_genmsg.dir/all: CMakeFiles/ROSBUILD_genmsg_py.dir/all
 CMakeFiles/rospack_genmsg.dir/all: CMakeFiles/ROSBUILD_genmsg_cpp.dir/all
+CMakeFiles/rospack_genmsg.dir/all: CMakeFiles/ROSBUILD_genmsg_py.dir/all
 	$(MAKE) -f CMakeFiles/rospack_genmsg.dir/build.make CMakeFiles/rospack_genmsg.dir/depend
 	$(MAKE) -f CMakeFiles/rospack_genmsg.dir/build.make CMakeFiles/rospack_genmsg.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/wavy/workspace/ros/terpsichore/build/CMakeFiles 

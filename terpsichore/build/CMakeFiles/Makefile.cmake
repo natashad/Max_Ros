@@ -142,6 +142,7 @@ SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/clean_test_results.dir/DependInfo.cmake"
   "CMakeFiles/doxygen.dir/DependInfo.cmake"
   "CMakeFiles/interpreter.dir/DependInfo.cmake"
+  "CMakeFiles/latency_test.dir/DependInfo.cmake"
   "CMakeFiles/osc_relay.dir/DependInfo.cmake"
   "CMakeFiles/rosbuild_clean-test-results.dir/DependInfo.cmake"
   "CMakeFiles/rosbuild_precompile.dir/DependInfo.cmake"

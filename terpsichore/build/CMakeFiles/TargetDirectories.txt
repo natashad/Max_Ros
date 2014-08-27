@@ -9,6 +9,7 @@
 /home/wavy/workspace/ros/terpsichore/build/gtest/CMakeFiles/gtest.dir
 /home/wavy/workspace/ros/terpsichore/build/gtest/CMakeFiles/gtest_main.dir
 /home/wavy/workspace/ros/terpsichore/build/CMakeFiles/interpreter.dir
+/home/wavy/workspace/ros/terpsichore/build/CMakeFiles/latency_test.dir
 /home/wavy/workspace/ros/terpsichore/build/CMakeFiles/osc_relay.dir
 /home/wavy/workspace/ros/terpsichore/build/CMakeFiles/rosbuild_clean-test-results.dir
 /home/wavy/workspace/ros/terpsichore/build/CMakeFiles/rosbuild_precompile.dir

@@ -1,0 +1,23 @@
+<package>
+  <description brief="drum_machine_drone">
+
+     drum_machine_drone
+
+  </description>
+  <author>Xingbo Wang</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/drum_machine_drone</url>
+  <depend package="roscpp"/>
+  <depend package="ardrone_autonomy"/>
+  <depend package="terpsichore"/>
+  <depend package="mephisto"/>
+  
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>mephisto</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>mephisto</run_depend>
+  <run_depend>terpsichore</run_depend>
+
+</package>

@@ -58,6 +58,7 @@ set(FORCE_ESTIMATOR_HEADER_FILES
 add_definitions( -Wall )
 
 rosbuild_add_executable(force_estimator ${FORCE_ESTIMATOR_SOURCE_FILES} ${FORCE_ESTIMATOR_HEADER_FILES})
+rosbuild_add_library(force_estimator ${FORCE_ESTIMATOR_SOURCE_FILES} ${FORCE_ESTIMATOR_HEADER_FILES})
 
 target_link_libraries(force_estimator m)
 
@@ -80,31 +81,7 @@ set(REACTOR_HEADER_FILES
 add_definitions( -Wall )
 
 rosbuild_add_executable(reactor ${REACTOR_SOURCE_FILES} ${REACTOR_HEADER_FILES})
-
-set(SFML_LIBRARIES sfml-graphics sfml-window sfml-system sfml-audio)
-target_link_libraries(reactor m)
-
-#===============================================================================
-
-set(DRUM_MACHINE_SOURCE_FILES         
-	src/Core.cpp
-	src/State.cpp
-	src/FloatState.cpp
-	src/DrumMachine.cpp
-	src/StateMachine.cpp
-	src/DrumNode.cpp
-)
-
-set(DRUM_MACHINE_HEADER_FILES
-	src/Core.h
-	src/State.h
-	src/DrumMachine.h
-)
-
-
-add_definitions( -Wall )
-
-rosbuild_add_executable(drum ${DRUM_MACHINE_SOURCE_FILES} ${DRUM_MACHINE_HEADER_FILES})
+rosbuild_add_library(state_machine ${REACTOR_SOURCE_FILES} ${REACTOR_HEADER_FILES})
 
 set(SFML_LIBRARIES sfml-graphics sfml-window sfml-system sfml-audio)
 target_link_libraries(reactor m)

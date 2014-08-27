@@ -11,8 +11,11 @@
     <param name="ARDroneShare/ARDroneShare/zero_pose/position/y"    value="0" type="double" />
     <param name="ARDroneShare/ARDroneShare/zero_pose/position/z"    value="0" type="double" />
   </node>
-  <node name="vicon_coordinates" pkg="ardrone_tutorials" type="vicon.py" output="screen" required="True"/>
-  <!--<node name="terpsichore" pkg="terpsichore" type="osc_test" output="screen" required="True"/> -->
-  <node name="conductor" pkg="ardrone_tutorials" type="conductor.py" output="screen" required="True"/>
+  <node name="vicon_coordinates" pkg="ardrone_tutorials" type="vicon.py" output="screen" required="True">
+  	<remap from="/current_coordinates" to="/current_coordinates_uncorrected" />
+  </node>
+  <node name="state_estimator" pkg="ardrone_tutorials" type="latency_correction.py" output="screen" required="True" />
+  <!--<node name="terpsichore" pkg="terpsichore" type="" output="screen" required="True"/> -->
+  <node name="conductor1" pkg="ardrone_tutorials" type="conductor_splines.py" output="screen" required="True"/>
   <node name="dsl_controller" pkg="ardrone_tutorials" type="dsl_controller.py" output="screen" required="True"/>
 </launch>

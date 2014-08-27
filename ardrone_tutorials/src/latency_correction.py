@@ -24,7 +24,7 @@
 ####################
 
 # Import ROS libraries, rospy, and load manifest file for access to project dependencies
-import roslib; roslib.load_manifest('dsl__latency_correction')
+import roslib; roslib.load_manifest('ardrone_tutorials')
 import rospy
 import math
 
@@ -33,7 +33,7 @@ import math
 # IMPORT MESSAGES #
 ###################
 
-from dsl__msg.msg import StateData
+from ardrone_tutorials.msg import StateData
 from geometry_msgs.msg import Twist
 
 
