@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/wavy/workspace/ros/mephisto/src/Core.cpp
-Core.h
-/home/wavy/workspace/ros/mephisto/src/Core.h
-
 /home/wavy/workspace/ros/mephisto/src/Core.h
 ros/ros.h
 /home/wavy/workspace/ros/mephisto/src/ros/ros.h
@@ -23,12 +19,6 @@ string
 -
 list
 -
-cmath
--
-
-/home/wavy/workspace/ros/mephisto/src/FloatState.cpp
-State.h
-/home/wavy/workspace/ros/mephisto/src/State.h
 cmath
 -
 
@@ -46,26 +36,6 @@ string
 iostream
 -
 complex
--
-
-/home/wavy/workspace/ros/mephisto/src/ReactorNode.cpp
-ros/ros.h
-/home/wavy/workspace/ros/mephisto/src/ros/ros.h
-Core.h
-/home/wavy/workspace/ros/mephisto/src/Core.h
-State.h
-/home/wavy/workspace/ros/mephisto/src/State.h
-iostream
--
-cstdlib
--
-csignal
--
-
-/home/wavy/workspace/ros/mephisto/src/State.cpp
-State.h
-/home/wavy/workspace/ros/mephisto/src/State.h
-cmath
 -
 
 /home/wavy/workspace/ros/mephisto/src/State.h

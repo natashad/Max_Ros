@@ -14,10 +14,8 @@
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rosbuild_precompile.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rosbuild_premsgsrvgen.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_genmsg.dir
-/home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_genmsg_all.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_genmsg_libexe.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_gensrv.dir
-/home/wavy/workspace/ros/mephisto/build/CMakeFiles/rospack_gensrv_all.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/run_tests.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/state_machine.dir
 /home/wavy/workspace/ros/mephisto/build/CMakeFiles/test.dir

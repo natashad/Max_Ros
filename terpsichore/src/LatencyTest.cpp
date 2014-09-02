@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
     }else{
     	std::string line = argv[1];
     	
-    	int colon_pos = line.find(":");
+    	unsigned int colon_pos = line.find(":");
     	if(colon_pos != std::string::npos){
     		address = line.substr(0, colon_pos);
     		port = std::stoi(line.substr(colon_pos + 1, std::string::npos));
@@ -75,11 +75,11 @@ int main(int argc, char* argv[]){
 		stuff.push_back(0.5);
 		stuff.push_back(100.0);
 		test.data = stuff;
-		
+		std::cout << "looping" << std::endl;
 		if(completed){	
 			completed = false;
 			startTime = ros::Time::now();
-			std::cout << "Sending note" << std::endl;
+			std::cout << "Sending note.....";
 			sendNote(test);
 		}
 				

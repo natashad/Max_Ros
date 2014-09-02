@@ -13,8 +13,6 @@ SET(CMAKE_C_INCLUDE_PATH
   "../include"
   "/opt/ros/hydro/include"
   "/opt/ros/hydro/include/opencv"
-  "../msg_gen/cpp/include"
-  "../srv_gen/cpp/include"
   )
 SET(CMAKE_CXX_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})
 SET(CMAKE_Fortran_INCLUDE_PATH ${CMAKE_C_INCLUDE_PATH})

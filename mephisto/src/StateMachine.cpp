@@ -258,8 +258,8 @@ State* StateMachine::getNextState(){
 			//See if the force is big enough to trigger an animation or other state transitions
 			if(magnitude(curForce.linear) > LIN_THRESHOLD || magnitude(curForce.angular) > ROT_THRESHOLD){
 				//Look for a peak in the force data
-				if(magnitude(curForce.linear) < magnitude(prevForce.linear) || 
-					magnitude(curForce.angular) < magnitude(prevForce.angular)){
+				if((magnitude(curForce.linear) < magnitude(prevForce.linear) && magnitude(curForce.linear) > LIN_THRESHOLD) || 
+					(magnitude(curForce.angular) < magnitude(prevForce.angular) && magnitude(curForce.angular) > ROT_THRESHOLD)){
 					//peak found at prev force;		
 					ForceType type = getForceType(prevForce);
 					

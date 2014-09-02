@@ -32,6 +32,7 @@ void LatencyTestListener::ProcessMessage(const osc::ReceivedMessage& m, const Ip
         // example #2 -- argument iterator interface, supports
         // reflection for overloaded messages (eg you can call 
         // (*arg)->IsBool() to check if a bool was passed etc).
+        std::cout << "received " << m.AddressPattern() << std::endl;
         for(vector<CallbackType>::iterator it = callbacks.begin(); it != callbacks.end(); ++it){
             (*it)();
         }
