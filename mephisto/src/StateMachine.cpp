@@ -255,40 +255,44 @@ State* StateMachine::getNextState(){
 	//check for state switch if the current state is not locked
 	if(!curState->isLocked()){
 		if(curState == hoverState){
-			//See if the force is big enough to trigger an animation or other state transitions
-			if(magnitude(curForce.linear) > LIN_THRESHOLD || magnitude(curForce.angular) > ROT_THRESHOLD){
-				//Look for a peak in the force data
-				if((magnitude(curForce.linear) < magnitude(prevForce.linear) && magnitude(curForce.linear) > LIN_THRESHOLD) || 
-					(magnitude(curForce.angular) < magnitude(prevForce.angular) && magnitude(curForce.angular) > ROT_THRESHOLD)){
-					//peak found at prev force;		
-					ForceType type = getForceType(prevForce);
+			if(droneState == HOVERING || droneState == LANDED){
+				//See if the force is big enough to trigger an animation or other state transitions
+				if(magnitude(curForce.linear) > LIN_THRESHOLD || magnitude(curForce.angular) > ROT_THRESHOLD){
+					//Look for a peak in the force data
+					if((magnitude(curForce.linear) < magnitude(prevForce.linear) && magnitude(curForce.linear) > LIN_THRESHOLD) || 
+						(magnitude(curForce.angular) < magnitude(prevForce.angular) && magnitude(curForce.angular) > ROT_THRESHOLD)){
+						//peak found at prev force;		
+						ForceType type = getForceType(prevForce);
 					
-					//A top push is a land command
-					if(type == TOP_PUSH){
-						return landState;
-					}
-		    /*TODO REMOVED FOR GLEE
-					//Downward tilts initiates double tap to switch modes
-					else if(type == LEFT_DOWN_TILT || type == RIGHT_DOWN_TILT ||
-							type == FRONT_DOWN_TILT || type == BACK_DOWN_TILT)
-					{
-						((PassiveState*)passiveState)->fromState = curState;
-						((PassiveState*)passiveState)->toState = floatState;
-						((PassiveState*)passiveState)->triggerType = type;
-						return passiveState;
-					}
-			TODO REMOVED FOR GLEE*/
-					//everything else is flight animations
-					else{
-						curForce = prevForce;
-						return animState;
-					}
+						//A top push is a land command
+						if(type == TOP_PUSH){
+							return landState;
+						}
+				/*TODO REMOVED FOR GLEE
+						//Downward tilts initiates double tap to switch modes
+						else if(type == LEFT_DOWN_TILT || type == RIGHT_DOWN_TILT ||
+								type == FRONT_DOWN_TILT || type == BACK_DOWN_TILT)
+						{
+							((PassiveState*)passiveState)->fromState = curState;
+							((PassiveState*)passiveState)->toState = floatState;
+							((PassiveState*)passiveState)->triggerType = type;
+							return passiveState;
+						}
+				TODO REMOVED FOR GLEE*/
+						//everything else is flight animations
+						else{
+							curForce = prevForce;
+							return animState;
+						}
 					
+					}else{
+						return hoverState;
+					}
 				}else{
 					return hoverState;
 				}
 			}else{
-				return hoverState;
+				return curState;
 			}
 		}else if(curState == floatState){
 			//See if the force is big enough to trigger a mode toggle
